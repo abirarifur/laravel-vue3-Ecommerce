@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  height: 100vh;
+}
+#app .left-side {
+  display: flex;
+  width: 12%;
+}
+#app .left-side .sidebar-wrapper {
+  background-color: #1d1d1d;
+  flex-grow: 1;
+}
+#app .left-side .sidebar-wrapper .logo {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+#app .left-side .sidebar-wrapper .logo .logo-text {
+  font-size: 1em;
+  font-weight: bold;
+  font-family: Monoton;
+  color: #0dd693;
+}
+#app .left-side .sidebar-wrapper hr {
+  color: #0dd693;
+}
+#app .left-side .sidebar-wrapper .menu-name {
+  background-color: #1d1d1d;
+  padding: 10px 10px;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: Montserrat Alternates;
+  font-weight: bold;
+  color: #f9f9f9;
+}
+#app .left-side .sidebar-wrapper .menu-name:hover {
+  background-color: #414141;
+}
+#app .left-side .sidebar-wrapper .menu-name i {
+  font-size: 20px;
+  color: #f9f9f9;
+  margin-right: 10px;
+}
+#app .right-side {
+  display: flex;
+  flex-direction: column;
+  width: 88%;
+}
+#app .right-side .content {
+  background-color: #aa6666;
+  padding: 10px;
+  height: 100%;
+}
+
+

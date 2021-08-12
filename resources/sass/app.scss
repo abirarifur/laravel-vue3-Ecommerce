@@ -1,0 +1,66 @@
+
+@import './variables';
+
+body{
+    margin: 0;
+}
+#app{
+    display: flex;
+    height: 100vh;
+    .left-side{
+        display: flex;
+        width: 12%;
+        .sidebar-wrapper{
+            background-color: $base-dark;
+            flex-grow: 1;
+            .logo{
+                display: flex;
+                justify-content: start;
+                align-items: center;
+                .logo-text{
+                    font-size: 1em;
+                    font-weight: bold;
+                    font-family: Monoton;
+                    color: rgb(13, 214, 147);
+                }
+            }
+            hr{
+                color: $base-info;
+            }
+            .menu-name{
+                background-color: $base-dark;
+                padding: 10px 10px;
+                text-decoration: none;
+                font-size: 20px;
+                font-family: Montserrat Alternates;
+                font-weight: bold;
+                color: $text_color_dark;
+
+                &:hover{
+                    background-color: $base-dark-hover;
+                }
+                i {
+                    font-size: 20px;
+                    color: $text_color_dark;
+                    margin-right: 10px;
+                }
+
+            }
+
+
+        }
+    }
+    .right-side{
+        display: flex;
+        flex-direction: column;
+        width: 88%;
+        .content{
+            background-color: rgb(170, 102, 102);
+            padding: $basic-padding;
+            height: 100%;
+        }
+    }
+
+
+
+}
