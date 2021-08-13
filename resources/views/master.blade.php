@@ -36,6 +36,12 @@
                         </div>
                         <hr>
                         <div class="menu">
+                        <div class="menu-list">
+                                <div class="menu-name">
+                                    <i class="fas fa-cart-plus"></i>
+                                        Dashboard
+                                </div>
+                            </div>
                             <div class="menu-list">
                                 <div class="menu-name" data-bs-toggle="collapse" href="#products" role="button" aria-expanded="false" aria-controls="products">
                                     <i class="fas fa-cart-plus"></i>
@@ -111,12 +117,79 @@
                         </div>
                         </nav>
                     </div>
-                    <div class="content"></div>
+                    <div class="content">
+                        <div class="short-details">
+                            <div class="card m-3">
+                                <div class="card-header bg-dark">Products</div>
+                                <div class="card-body bg-info d-flex justify-content-between">
+                                    <div class="amount">50</div>
+                                    <i class="fab fa-product-hunt"></i>
+                                </div>
+                            </div>
+                            <div class="card m-3">
+                            <div class="card-header bg-dark">Orders</div>
+                                <div class="card-body bg-success d-flex justify-content-between">
+                                    <div class="amount">50</div>
+                                    <i class="fab fa-product-hunt"></i>
+                                </div>
+                            </div>
+                            <div class="card m-3">
+                            <div class="card-header bg-dark">Today's Amount</div>
+                                <div class="card-body bg-warning d-flex justify-content-between">
+                                    <div class="amount">50</div>
+                                    <i class="fab fa-product-hunt"></i>
+                                </div>
+                            </div>
+                            <div class="card m-3">
+                            <div class="card-header bg-dark">Monthly Amount</div>
+                                <div class="card-body bg-secondary d-flex justify-content-between">
+                                    <div class="amount">50</div>
+                                    <i class="fab fa-product-hunt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chartDetails d-flex">
+                            <div class="orderChart m-3">
+                            <canvas id="myChart" width="400" height="100" aria-label="Hello ARIA World" role="img">
+
+                            </canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+];
+const data = {
+  labels: labels,
+  datasets: [{
+    label: 'My First dataset',
+    backgroundColor: 'rgb(255, 99, 132)',
+    borderColor: 'rgb(255, 99, 132)',
+    data: [0, 10, 5, 2, 20, 45],
+  }]
+};
+const config = {
+  type: 'line',
+  data,
+  options: {}
+};
+var myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+    </script>
     </body>
 </html>
