@@ -149,10 +149,12 @@
                             </div>
                         </div>
                         <div class="chartDetails d-flex">
-                            <div class="orderChart m-3">
-                            <canvas id="myChart" width="400" height="100" aria-label="Hello ARIA World" role="img">
+                            <div class="orderChart m-3 justify-content-between">
+                                <canvas id="orderChart" aria-label="Hello ARIA World" role="img"></canvas>
 
-                            </canvas>
+                            </div>
+                            <div class="productChart m-3 justify-content-between">
+                                <canvas id="productChart" aria-label="Hello ARIA World" role="img"></canvas>
                             </div>
                         </div>
                     </div>
@@ -186,8 +188,12 @@ const config = {
   data,
   options: {}
 };
-var myChart = new Chart(
-    document.getElementById('myChart'),
+var orderChart = new Chart(
+    document.getElementById('orderChart'),
+    config
+  );
+  var productChart = new Chart(
+    document.getElementById('productChart'),
     config
   );
     </script>
