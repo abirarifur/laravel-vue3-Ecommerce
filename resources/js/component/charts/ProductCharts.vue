@@ -6,19 +6,18 @@
 import Chart from "chart.js/auto/auto";
 export default {
   data() {
-    return {
-    }
+    return {};
   },
   methods: {
     productChart() {
-      var ctx = document.getElementById('productChart');
-        var myChart = new Chart(ctx, {
+      var ctx = document.getElementById("productChart");
+      var myChart = new Chart(ctx, {
         type: "line",
         data: {
           labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
           datasets: [
             {
-            fill: true,
+              fill: true,
               label: "# of Votes",
               data: [12, 19, 3, 5, 2, 3],
               backgroundColor: [

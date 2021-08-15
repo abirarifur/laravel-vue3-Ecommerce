@@ -42,7 +42,7 @@ a:hover {
   color: #0dd693;
 }
 #app .left-side .sidebar-wrapper hr {
-  color: #0dd693;
+  color: #17A169;
 }
 #app .left-side .sidebar-wrapper .menu-name {
   background-color: #1d1d1d;
@@ -80,6 +80,7 @@ a:hover {
   flex-direction: column;
   width: 88%;
   background-color: aliceblue;
+  margin-top: 65px;
 }
 #app .right-side .content {
   padding: 10px;
