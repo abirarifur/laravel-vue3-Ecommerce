@@ -1,9 +1,5 @@
 <template>
-  <vue-final-modal
-    v-model="showModal"
-    classes="modal-container"
-    content-class="modal-content"
-  >
+  <vue-final-modal v-model="showModal" classes="modal-container" content-class="modal-content">
     <a type="button" class="align-self-end"
       ><i class="far fa-times-circle" @click="showModal = false"></i
     ></a>
@@ -39,9 +35,8 @@
               class="form-control"
             ></textarea>
           </div>
-          
         </div>
-        <div class="middle flex-grow-1 p-3">
+        <!-- <div class="middle flex-grow-1 p-3">
             <div class="mb-3">
             <label for="muiltImg">Image Gallery</label>
             <input
@@ -59,9 +54,57 @@
             </div>
  
           </div>
-        </div>
+        </div> -->
         <div class="rightSide flex-grow-1 p-3">
-
+          <div class="card">
+            <div class="card-header">Attributes</div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="style">Style</label>
+                <vue-tags-input
+                  v-model="styleTag"
+                  :tags="styleTags"
+                  @tags-changed="(newTags) => (styleTags = newTags)"
+                  @change="setCrossJoin"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="size">Size</label>
+                <vue-tags-input
+                  v-model="sizeTag"
+                  :tags="sizeTags"
+                  @tags-changed="(newTags) => {
+                      (sizeTags = newTags)
+                      setCrossJoin()
+                      }"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="color">Color</label>
+                <vue-tags-input
+                  v-model="colorTag"
+                  :tags="colorTags"
+                  @tags-changed="(newTags) => (colorTags = newTags)"
+                  @change="setCrossJoin"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card mt-3">
+            <div class="card-header">Stock & image</div>
+            <div class="card-body">
+              <div class="container">
+                <div class="row" v-for="(coll, index) in collection" :key="index">
+                  <div class="col-2">{{++index}}</div>
+                  <div class="col-2">{{coll[0]}}</div>
+                  <div class="col-2">{{coll[1]}}</div>
+                  <div class="col-2">{{coll[2]}}</div>
+                  <div class="col-2"><input type="number" /></div>
+                  <div class="col-2"><input type="number" /></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -70,57 +113,97 @@
 
 <script>
 import { $vfm, VueFinalModal, ModalsContainer } from "vue-final-modal";
+import VueTagsInput from "@sipec/vue3-tags-input";
 
 export default {
   components: {
     VueFinalModal,
     ModalsContainer,
+    VueTagsInput,
   },
   data() {
     return {
       showModal: false,
       files: [],
+      styleTag: "",
+      styleTags: [],
+      sizeTag: "",
+      sizeTags: [],
+      colorTag: "",
+      colorTags: [],
+      collection: []
     };
   },
   methods: {
     showmodel() {
       return (this.showModal = true);
     },
-    imagePerview(file) {
-      debugger;
-      for (const imgfile of file.target.files) {
-          this.files.push(URL.createObjectURL(imgfile));
+    setCrossJoin() {
+        this.collection = []
+        debugger
+      for (let i = 0; i < this.styleTags.length; i++) {
+        for (let j = 0; j < this.sizeTags.length; j++) {
+          for (let z = 0; z < this.colorTags.length; z++) {
+            this.collection.push([this.styleTags[i].text, this.sizeTags[j].text, this.colorTags[z].text]);
+          }
+        }
       }
-      this.$refs.muiltImg.value = ''
-
-      
     },
-    removeImg(id){
-        this.files.splice(id, 1);
-    }
-    
+    // cartesianProduct(a, b) {
+    //   debugger;
+    //   a.reduce((p, x) => [...p, ...b.map((y) => [x, y])], []);
+    // },
+    // cartesianProductOf() {
+    //     debugger
+    //   return _.reduce(
+    //     arguments,
+    //     function (a, b) {
+    //       return _.flatten(
+    //         _.map(a, function (x) {
+    //           return _.map(b, function (y) {
+    //             return x.concat([y]);
+    //           });
+    //         }),
+    //         true
+    //       );
+    //     },
+    //     [[]]
+    //   )
+    // },
+    // imagePerview(file) {
+    //   for (const imgfile of file.target.files) {
+    //       this.files.push(URL.createObjectURL(imgfile));
+    //   }
+    //   this.$refs.muiltImg.value = ''
+
+    // },
+    // removeImg(id){
+    //     this.files.splice(id, 1);
+    // }
   },
-  mounted() {},
 };
 </script>
 
 <style lang="scss" scoped>
-.form_container{
-    display: flex;
+.form_container {
+  display: flex;
 }
-.image-preview{
-    display: flex;
-    i{
-        position: absolute;
-        margin: 5px;
-        color: white;
-        background-color: black;
-    }
-    img{
-        width: 150px;
-        height: 200px;
-        object-fit: cover;
-    }
+.fa-times-circle {
+  font-size: 25px;
+}
+.image-preview {
+  display: flex;
+  i {
+    position: absolute;
+    margin: 5px;
+    color: white;
+    background-color: black;
+  }
+  img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+  }
 }
 ::v-deep .modal-container {
   display: flex;
@@ -137,6 +220,7 @@ export default {
   border: 1px solid #e2e8f0;
   border-radius: 0.25rem;
   background: #fff;
+  overflow: auto;
 }
 .modal__title {
   margin: 0 2rem 0 0;
