@@ -4,6 +4,7 @@ import { createApp } from 'vue';
 import router from './routes';
 import Navbar from './component/bars/Navbar';
 import Sidebar from './component/bars/Sidebar';
+
 const app = createApp({});
 
 app.component('navbar', Navbar)

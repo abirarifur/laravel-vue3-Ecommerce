@@ -36,11 +36,7 @@
           <div class="card">
             <div class="card-header bg-dark text-white">Products Chart</div>
             <div class="card-body">
-              <canvas
-                id="orderChart"
-                aria-label="Hello ARIA World"
-                role="img"
-              ></canvas>
+                <ProductChart />
             </div>
           </div>
         </div>
@@ -48,11 +44,6 @@
           <div class="card">
             <div class="card-header bg-dark text-white">Orders Chart</div>
             <div class="card-body">
-              <canvas
-                id="productChart"
-                aria-label="Hello ARIA World"
-                role="img"
-              ></canvas>
             </div>
           </div>
         </div>
@@ -62,49 +53,19 @@
 </template>
 
 <script>
+import ProductChart from "./charts/ProductCharts.vue"
 export default {
-    
-    data() {
-        return {
-            labels : [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            ],
-            dataSet : {
-                labels: this.labels,
-                datasets: [{
-                    label: 'Product Add Chart',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [5, 10, 5, 2, 20, 45],
-                }]
-            },
-            config : {
-                type: 'line',
-                data: this.dataSet,
-                options: {}
-            }
-        }
-    },
-    methods: {
-        orderChart(){
-            return new Chart(
-            document.getElementById('orderChart'),
-            this.config
-            
-        )
-        
-        }
-    },
-    mounted () {
-        debugger;
-        this.orderChart();
-    },
-    
-  
-}
+  components: {
+      ProductChart,
+  },
+  data() {
+    return {
+       
+    }
+  },
+  methods: {
+
+  },
+  mounted() {},
+};
 </script>

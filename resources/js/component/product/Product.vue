@@ -1,13 +1,9 @@
 <template>
-    <div>
-        <h1>this is a product page</h1>
-         <h1>this is a product page</h1>
-          <h1>this is a product page</h1>
-           <h1>this is a product page</h1>
-
-            <h1>this is a product page</h1>
-            
+    <div class="right-side mt-5">
+    <div class="content">
+        asdasdasdsadd
     </div>
+  </div>
 </template>
 
 <script>
