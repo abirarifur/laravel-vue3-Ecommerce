@@ -1,56 +1,127 @@
 <template>
-    <vue-final-modal v-model="showModal" classes="modal-container" content-class="modal-content">
-      <a type="button" class="align-self-end"><i class="far fa-times-circle" @click="showModal = false"></i></a>
-      <h3>Add New Product</h3>
-      <form>
-          <div class="form_container">
-              <div class="leftSide">
-                  <div class="form-group">
-                      <label for="name">Name</label>
-                      <input type="text" id="name" name="name" class="form-control">
-                  </div>
-                   <div class="form-group">
-                      <label for="sku">SKU</label>
-                      <input type="text" id="sku" name="sku" class="form-control">
-                  </div>
-                   <div class="form-group">
-                      <label for="shortDiscription">Short Description</label>
-                      <textarea name="shortDiscription" id="shortDiscription" cols="30" rows="2" class="form-control"></textarea>
-                  </div>
-                   <div class="form-group">
-                      <label for="description">Description</label>
-                      <textarea name="description" id="description" cols="30" rows="2" class="form-control"></textarea>
-                  </div>
-              </div>
-              <div class="rightSide">
-                  
-              </div>
+  <vue-final-modal
+    v-model="showModal"
+    classes="modal-container"
+    content-class="modal-content"
+  >
+    <a type="button" class="align-self-end"
+      ><i class="far fa-times-circle" @click="showModal = false"></i
+    ></a>
+    <h3>Add New Product</h3>
+    <form>
+      <div class="form_container">
+        <div class="leftSide flex-grow-1 p-3">
+          <div class="mb-3">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" class="form-control" />
           </div>
-      </form>
-    </vue-final-modal>
+          <div class="mb-3">
+            <label for="sku">SKU</label>
+            <input type="text" id="sku" name="sku" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="shortDiscription">Short Description</label>
+            <textarea
+              name="shortDiscription"
+              id="shortDiscription"
+              cols="30"
+              rows="2"
+              class="form-control"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="description">Description</label>
+            <textarea
+              name="description"
+              id="description"
+              cols="30"
+              rows="2"
+              class="form-control"
+            ></textarea>
+          </div>
+          
+        </div>
+        <div class="middle flex-grow-1 p-3">
+            <div class="mb-3">
+            <label for="muiltImg">Image Gallery</label>
+            <input
+              type="file"
+              @change="imagePerview($event)"
+              class="form-control"
+              multiple
+              ref="muiltImg"
+            />
+            <div class="image-preview" v-if="files">
+              <div v-for="(file, index) in files" :key="index" class="m-1">
+                  <i class="far fa-times-circle" @click="removeImg(index)"></i>
+                <img :src="file" alt="" />
+              </div>
+            </div>
+ 
+          </div>
+        </div>
+        <div class="rightSide flex-grow-1 p-3">
+
+        </div>
+      </div>
+    </form>
+  </vue-final-modal>
 </template>
 
 <script>
-import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal'
+import { $vfm, VueFinalModal, ModalsContainer } from "vue-final-modal";
+
 export default {
-    components: {
-        VueFinalModal,
-        ModalsContainer
+  components: {
+    VueFinalModal,
+    ModalsContainer,
+  },
+  data() {
+    return {
+      showModal: false,
+      files: [],
+    };
+  },
+  methods: {
+    showmodel() {
+      return (this.showModal = true);
     },
-    data() {
-        return {
-            showModal: false
-        }
+    imagePerview(file) {
+      debugger;
+      for (const imgfile of file.target.files) {
+          this.files.push(URL.createObjectURL(imgfile));
+      }
+      this.$refs.muiltImg.value = ''
+
+      
     },
-    methods: {
-        showmodel(){
-            return this.showModal = true
-        }
-    },
-}
+    removeImg(id){
+        this.files.splice(id, 1);
+    }
+    
+  },
+  mounted() {},
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.form_container{
+    display: flex;
+}
+.image-preview{
+    display: flex;
+    i{
+        position: absolute;
+        margin: 5px;
+        color: white;
+        background-color: black;
+    }
+    img{
+        width: 150px;
+        height: 200px;
+        object-fit: cover;
+    }
+}
 ::v-deep .modal-container {
   display: flex;
   justify-content: center;
@@ -95,7 +166,7 @@ export default {
   border-color: #2d3748;
   background-color: #1a202c;
 }
-.form_container{
-    display: flex;
+.form_container {
+  display: flex;
 }
 </style>
