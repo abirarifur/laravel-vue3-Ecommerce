@@ -19,6 +19,12 @@ body {
   justify-content: start;
   align-items: center;
 }
+#app .left-side .sidebar-wrapper .logo .logoImg {
+  width: 80px;
+  height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
 #app .left-side .sidebar-wrapper .logo .logo-text {
   font-size: 1em;
   font-weight: bold;
@@ -35,15 +41,29 @@ body {
   font-size: 20px;
   font-family: Montserrat Alternates;
   font-weight: bold;
-  color: #f9f9f9;
+  color: #cccccc;
 }
 #app .left-side .sidebar-wrapper .menu-name:hover {
   background-color: #414141;
+  color: #f9f9f9;
 }
 #app .left-side .sidebar-wrapper .menu-name i {
   font-size: 20px;
-  color: #f9f9f9;
+  color: #cccccc;
   margin-right: 10px;
+}
+#app .main-header {
+  position: fixed;
+  width: 88%;
+  right: 0;
+}
+#app .main-header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-size: contain;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 #app .right-side {
   display: flex;
@@ -63,17 +83,18 @@ body {
 #app .right-side .content .short-details .card {
   flex-grow: 1;
   justify-content: center;
-  color: #f9f9f9;
+  color: #cccccc;
   transition: all 0.3s;
 }
 #app .right-side .content .short-details .card:hover {
   box-shadow: 0 5px 20px 0px gray;
   cursor: pointer;
+  color: #f9f9f9;
 }
 #app .right-side .content .short-details .card .card-header {
   font-size: 20px;
   font-family: "Montserrat Alternates";
-  font-weight: bold;
+  font-weight: 400;
 }
 #app .right-side .content .short-details .card .amount {
   font-size: 24px;
@@ -90,14 +111,16 @@ body {
 }
 #app .right-side .content .short-details .card i {
   font-size: 80px;
-  opacity: 0.5;
+  opacity: 1;
 }
 #app .right-side .content .chartDetails {
   display: flex;
 }
 #app .right-side .content .chartDetails .orderChart {
   width: 60%;
-  padding: 50px;
+}
+#app .right-side .content .chartDetails .productChart {
+  flex-grow: 1;
 }
 
 
