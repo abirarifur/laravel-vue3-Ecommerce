@@ -1,5 +1,9 @@
 <template>
-  <vue-final-modal v-model="showModal" classes="modal-container" content-class="modal-content">
+  <vue-final-modal
+    v-model="showModal"
+    classes="modal-container"
+    content-class="modal-content"
+  >
     <a type="button" class="align-self-end"
       ><i class="far fa-times-circle" @click="showModal = false"></i
     ></a>
@@ -52,7 +56,7 @@
                 <img :src="file" alt="" />
               </div>
             </div>
- 
+
           </div>
         </div> -->
         <div class="rightSide flex-grow-1 p-3">
@@ -65,7 +69,6 @@
                   v-model="styleTag"
                   :tags="styleTags"
                   @tags-changed="(newTags) => (styleTags = newTags)"
-                  @change="setCrossJoin"
                 />
               </div>
               <div class="mb-3">
@@ -73,10 +76,7 @@
                 <vue-tags-input
                   v-model="sizeTag"
                   :tags="sizeTags"
-                  @tags-changed="(newTags) => {
-                      (sizeTags = newTags)
-                      setCrossJoin()
-                      }"
+                  @tags-changed="(newTags) => (sizeTags = newTags)"
                 />
               </div>
               <div class="mb-3">
@@ -84,8 +84,12 @@
                 <vue-tags-input
                   v-model="colorTag"
                   :tags="colorTags"
-                  @tags-changed="(newTags) => (colorTags = newTags)"
-                  @change="setCrossJoin"
+                  @tags-changed="
+                    (newTags) => {
+                      colorTags = newTags;
+                      setCrossJoin();
+                    }
+                  "
                 />
               </div>
             </div>
@@ -94,13 +98,68 @@
             <div class="card-header">Stock & image</div>
             <div class="card-body">
               <div class="container">
-                <div class="row" v-for="(coll, index) in collection" :key="index">
-                  <div class="col-2">{{++index}}</div>
-                  <div class="col-2">{{coll[0]}}</div>
-                  <div class="col-2">{{coll[1]}}</div>
-                  <div class="col-2">{{coll[2]}}</div>
-                  <div class="col-2"><input type="number" /></div>
-                  <div class="col-2"><input type="number" /></div>
+                <div
+                  class="row mb-3"
+
+                >
+                  <div class="col-12">
+                    <div class="row">
+                        <table class="table" >
+                            <thead>
+                                <tr>
+                                    <th>style</th>
+                                    <th>size</th>
+                                    <th>color</th>
+                                    <th>stock</th>
+                                    <th>price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="proPriceTable">
+                                <tr v-for="(coll, index) in collection" :key="index">
+                                    <th>{{ coll[0] }}</th>
+                                    <th>{{ coll[1] }}</th>
+                                    <th>{{ coll[2] }}</th>
+                                    <th><input type="number" class="form-control" v-model="stock"/></th>
+                                    <th><input type="number" class="form-control" v-model="price"/></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button @click.prevent="getTableRow">get table data</button>
+                      <!-- <div class="col-2">{{ ++index }}</div>
+                      <div class="col-2"><input type="text"  disabled value="{{ coll[0] }}"></div>
+                      <div class="col-2"><input type="text" name="details[]" disabled value="{{ coll[1] }}"></div>
+                      <div class="col-2"><input type="text" name="details[]" disabled value="{{ coll[2] }}"></div>
+                      <div class="col-2">
+                        <input type="number" class="form-control" v-model="stock"/>
+                      </div>
+                      <div class="col-2">
+                        <input type="number" class="form-control" v-model="price"/>
+                      </div> -->
+                    </div>
+                    <!-- <div class="row mt-3">
+                      <label for="muiltImg">Image Gallery</label>
+                      <input
+                        type="file"
+                        @change="imagePerview($event)"
+                        class="form-control"
+                        multiple
+                        ref="muiltImg"
+                      />
+                      <div class="image-preview" v-if="files">
+                        <div
+                          v-for="(file, index) in files"
+                          :key="index"
+                          class="m-1"
+                        >
+                          <i
+                            class="far fa-times-circle"
+                            @click="removeImg(index)"
+                          ></i>
+                          <img :src="file" alt="" />
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -131,7 +190,8 @@ export default {
       sizeTags: [],
       colorTag: "",
       colorTags: [],
-      collection: []
+      collection: [],
+      productDataCollection: []
     };
   },
   methods: {
@@ -139,16 +199,46 @@ export default {
       return (this.showModal = true);
     },
     setCrossJoin() {
-        this.collection = []
-        debugger
+      this.collection = [];
+      debugger;
       for (let i = 0; i < this.styleTags.length; i++) {
         for (let j = 0; j < this.sizeTags.length; j++) {
           for (let z = 0; z < this.colorTags.length; z++) {
-            this.collection.push([this.styleTags[i].text, this.sizeTags[j].text, this.colorTags[z].text]);
+            this.collection.push([
+              this.styleTags[i].text,
+              this.sizeTags[j].text,
+              this.colorTags[z].text,
+            ]);
           }
         }
       }
     },
+    getTableRow(){
+        debugger;
+        let table = document.getElementById('proPriceTable');
+        let tableData = [];
+
+        for (let i = 0; i < table.rows.length; i++) {
+            for (let j = 1; j < table.rows[i].cells.length; j++) {
+                if(j > 3){
+                    for (let z = 0; z < table.rows[i].cells[j].children.length; z++) {
+                        tableData.push(table.rows[i].cells[j].children[z].value);
+                        break;
+                    }
+                }else{
+                    tableData.push(table.rows[i].cells[j].innerHTML)
+                }
+
+
+            }
+            this.productDataCollection.push(tableData)
+        }
+
+    }
+    // setStyleTag(event){
+    //     debugger
+    //     this.styleTags.push(event.target.value)
+    // }
     // cartesianProduct(a, b) {
     //   debugger;
     //   a.reduce((p, x) => [...p, ...b.map((y) => [x, y])], []);
@@ -172,14 +262,13 @@ export default {
     // },
     // imagePerview(file) {
     //   for (const imgfile of file.target.files) {
-    //       this.files.push(URL.createObjectURL(imgfile));
+    //     this.files.push(URL.createObjectURL(imgfile));
     //   }
-    //   this.$refs.muiltImg.value = ''
-
+    //   this.$refs.muiltImg.value = "";
     // },
-    // removeImg(id){
-    //     this.files.splice(id, 1);
-    // }
+    // removeImg(id) {
+    //   this.files.splice(id, 1);
+    // },
   },
 };
 </script>

@@ -28,22 +28,33 @@
 </head>
 
 <body>
+@if (Auth::check())
+    @php
+    $user_auth_data = [
+        'isLoggedin' => true,
+        'user' =>  Auth::user()
+    ];
+    @endphp
+@else
+    @php
+    $user_auth_data = [
+        'isLoggedin' => false
+    ];
+    @endphp
+@endif
+<script>
+    window.laravel = JSON.parse(atob('{{ base64_encode(json_encode($user_auth_data)) }}'));
+</script>
+
     <div class="wrapper">
         <div id="app">
-            <div class="left-side">
-                <Sidebar />
-            </div>
-            <div class="main-header">
-                <navbar></navbar>
-            </div>
 
-            <router-view></router-view>
         </div>
 
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    
+
     <script src="{{mix('js/app.js')}}"></script>
     <!-- <script>
         const labels = [

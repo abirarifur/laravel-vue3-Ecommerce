@@ -1,4 +1,10 @@
 <template>
+<div class="left-side">
+            <Sidebar />
+        </div>
+<div class="main-header">
+            <navbar></navbar>
+        </div>
   <div class="right-side">
     <div class="content p-5">
         <h3>Products List</h3>
@@ -37,9 +43,13 @@
 
 <script>
 import ProductAddModel from "../model/ProductAdd.vue"
+import Navbar from '../bars/Navbar.vue'
+import Sidebar from '../bars/Sidebar.vue'
 export default {
     components: {
         ProductAddModel,
+        Navbar,
+        Sidebar
     },
     methods: {
         showmodel() {

@@ -19,30 +19,19 @@ a:hover {
 #app .left-side {
   display: flex;
   width: 12%;
+  flex-grow: 1;
 }
 #app .left-side .sidebar-wrapper {
   background-color: #1d1d1d;
   flex-grow: 1;
-}
-#app .left-side .sidebar-wrapper .logo {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-}
-#app .left-side .sidebar-wrapper .logo .logoImg {
-  width: 80px;
-  height: 80px;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-#app .left-side .sidebar-wrapper .logo .logo-text {
-  font-size: 1em;
-  font-weight: bold;
-  font-family: Monoton;
-  color: #0dd693;
+  margin-top: 78px;
 }
 #app .left-side .sidebar-wrapper hr {
   color: #17A169;
+}
+#app .left-side .sidebar-wrapper .menu {
+  position: sticky;
+  top: 78px;
 }
 #app .left-side .sidebar-wrapper .menu-name {
   background-color: #1d1d1d;
@@ -66,6 +55,7 @@ a:hover {
   position: fixed;
   width: 88%;
   right: 0;
+  z-index: 100;
 }
 #app .main-header img {
   width: 50px;
@@ -74,6 +64,23 @@ a:hover {
   background-size: contain;
   -o-object-fit: cover;
      object-fit: cover;
+}
+#app .main-header .logo {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+#app .main-header .logo .logoImg {
+  width: 60px;
+  height: 60px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+#app .main-header .logo .logo-text {
+  font-size: 1em;
+  font-weight: bold;
+  font-family: Monoton;
+  color: #0dd693;
 }
 #app .right-side {
   display: flex;

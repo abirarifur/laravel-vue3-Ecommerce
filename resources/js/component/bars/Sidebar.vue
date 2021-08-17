@@ -1,15 +1,15 @@
 <template>
   <div class="sidebar-wrapper">
-    <div class="logo">
+    <!-- <div class="logo">
       <img :src="logo" alt="Logo" class="logoImg" />
       <div class="logo-text">Admin Panel</div>
-    </div>
-    <hr />
+    </div> -->
+    <!-- <hr /> -->
     <div class="menu">
       <div class="menu-list">
         <div class="menu-name">
           <i class="fas fa-cart-plus"></i>
-          <router-link to="/">Dashboard</router-link> 
+          <router-link to="/">Dashboard</router-link>
         </div>
       </div>
       <div class="menu-list">
@@ -26,7 +26,7 @@
         </div>
         <div class="collapse" id="products">
           <ul class="list-group list-group-flush bg-dark">
-            <router-link to="/product"><li class="list-group-item bg-dark text-white">Product list</li></router-link> 
+            <router-link to="/product"><li class="list-group-item bg-dark text-white">Product list</li></router-link>
             <li class="list-group-item bg-dark text-white">A second item</li>
             <li class="list-group-item bg-dark text-white">A third item</li>
             <li class="list-group-item bg-dark text-white">A fourth item</li>
@@ -62,10 +62,7 @@
 
 <script>
 export default {
-  setup() {
-      let logo = "img/logo.png"
-    return {logo};
-  },
+
 };
 </script>
 

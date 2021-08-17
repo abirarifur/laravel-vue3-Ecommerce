@@ -20,27 +20,18 @@ a {
     .left-side {
         display: flex;
         width: 12%;
+        flex-grow: 1;
         .sidebar-wrapper {
             background-color: $base-dark;
             flex-grow: 1;
-            .logo {
-                display: flex;
-                justify-content: start;
-                align-items: center;
-                .logoImg {
-                    width: 80px;
-                    height: 80px;
-                    object-fit: cover;
-                }
-                .logo-text {
-                    font-size: 1em;
-                    font-weight: bold;
-                    font-family: Monoton;
-                    color: rgb(13, 214, 147);
-                }
-            }
+            margin-top: 78px;
             hr {
                 color: $base-info;
+            }
+            .menu{
+                position: -webkit-sticky;
+                position: sticky;
+                top: 78px;
             }
             .menu-name {
                 background-color: $base-dark;
@@ -62,16 +53,34 @@ a {
             }
         }
     }
+
     .main-header {
         position: fixed;
         width: 88%;
         right: 0;
+        z-index: 100;
         img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             background-size: contain;
             object-fit: cover;
+        }
+        .logo {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            .logoImg {
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+            }
+            .logo-text {
+                font-size: 1em;
+                font-weight: bold;
+                font-family: Monoton;
+                color: rgb(13, 214, 147);
+            }
         }
     }
     .right-side {

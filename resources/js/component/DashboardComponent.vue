@@ -1,4 +1,10 @@
 <template>
+<div class="left-side">
+            <sidebar></sidebar>
+        </div>
+<div class="main-header">
+            <navbar></navbar>
+        </div>
   <div class="right-side mt-5">
     <div class="content">
       <div class="short-details">
@@ -54,13 +60,17 @@
 
 <script>
 import ProductChart from "./charts/ProductCharts.vue"
+// import Navbar from './bars/Navbar.vue'
+// import Sidebar from './bars/Sidebar.vue'
 export default {
   components: {
       ProductChart,
+    //   Navbar,
+    //   Sidebar
   },
   data() {
     return {
-       
+
     }
   },
   methods: {
