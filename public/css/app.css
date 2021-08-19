@@ -101,7 +101,7 @@ a:hover {
 #app .right-side .content .short-details .card {
   flex-grow: 1;
   justify-content: center;
-  color: #cccccc;
+  color: #222222;
   transition: all 0.3s;
 }
 #app .right-side .content .short-details .card:hover {
@@ -121,7 +121,7 @@ a:hover {
   padding: 10px;
   border-radius: 50%;
   min-width: 80px;
-  border: 10px solid white;
+  border: 10px solid #222222;
   height: 80px;
   display: flex;
   justify-content: center;

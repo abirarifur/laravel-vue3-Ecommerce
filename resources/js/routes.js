@@ -4,8 +4,8 @@ import Login from './pages/Login'
 import Product from './component/product/Product'
 const routes = [
     { path: '/',name: 'dashboard', component: DashboardComponent },
-    { path: '/login',name: 'Login', component: Login },
-    { path: '/product',name: 'productList', component: Product }
+    { path: '/admin/login',name: 'Login', component: Login },
+    { path: '/admin/product',name: 'adminProductList', component: Product }
 ]
 
 const router = createRouter({

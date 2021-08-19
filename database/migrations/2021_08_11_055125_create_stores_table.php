@@ -21,6 +21,7 @@ class CreateStoresTable extends Migration
             $table->foreignId('color_id')->constrained();
             $table->integer('stock');
             $table->double('price', 8, 2);
+            $table->json('images');
             $table->timestamps();
         });
     }

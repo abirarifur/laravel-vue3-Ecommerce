@@ -26,7 +26,7 @@
         </div>
         <div class="collapse" id="products">
           <ul class="list-group list-group-flush bg-dark">
-            <router-link to="/product"><li class="list-group-item bg-dark text-white">Product list</li></router-link>
+            <router-link to="/admin/product"><li class="list-group-item bg-dark text-white">Product list</li></router-link>
             <li class="list-group-item bg-dark text-white">A second item</li>
             <li class="list-group-item bg-dark text-white">A third item</li>
             <li class="list-group-item bg-dark text-white">A fourth item</li>

@@ -1,7 +1,7 @@
 <template>
     <div class="login-form d-flex justify-content-center align-items-center w-100" >
         <div class="card">
-        <div class="card-header"><img src="img/logo.png" alt=""></div>
+        <div class="card-header"><img src="/img/logo.png" alt=""></div>
         <div class="card-body">
             <p>{{loginFalledMassage}}</p>
             <div class="mb-3">

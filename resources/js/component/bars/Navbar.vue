@@ -39,8 +39,8 @@ import axios from "axios";
 import router from '../../routes.js'
 export default {
   setup() {
-    let adminImg = "img/admin-img.jpg";
-    let logo = "img/logo.png";
+    let adminImg = '/img/admin-img.jpg';
+    let logo = "/img/logo.png";
     function logout() {
       axios.get("/sanctum/csrf-cookie").then((response) => {
         axios

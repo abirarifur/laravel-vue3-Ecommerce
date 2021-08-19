@@ -9,170 +9,155 @@
     ></a>
     <h3>Add New Product</h3>
     <form>
-      <div class="form_container">
-        <div class="leftSide flex-grow-1 p-3">
-          <div class="mb-3">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" class="form-control" />
-          </div>
-          <div class="mb-3">
-            <label for="sku">SKU</label>
-            <input type="text" id="sku" name="sku" class="form-control" />
-          </div>
-          <div class="mb-3">
-            <label for="shortDiscription">Short Description</label>
-            <textarea
-              name="shortDiscription"
-              id="shortDiscription"
-              cols="30"
-              rows="2"
-              class="form-control"
-            ></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="description">Description</label>
-            <textarea
-              name="description"
-              id="description"
-              cols="30"
-              rows="2"
-              class="form-control"
-            ></textarea>
+      <div class="form_container flex-column">
+        <div class="general">
+          <div class="card">
+            <div class="card-header">General</div>
+            <div class="card-body d-flex justify-content-between">
+              <div class="mx-3 w-100">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" v-model="name" class="form-control" />
+              </div>
+              <div class="mx-3 w-100">
+                <label for="sku">SKU</label>
+                <input
+                  type="text"
+                  id="sku"
+                  name="sku"
+                  class="form-control"
+                  v-model="sku"
+                />
+              </div>
+              <div class="mx-3 w-100">
+                <label for="shortDiscription">Short Description</label>
+                <textarea
+                  name="shortDiscription"
+                  id="shortDiscription"
+                  cols="30"
+                  rows="2"
+                  class="form-control"
+                  v-model="shortDiscription"
+                ></textarea>
+              </div>
+              <div class="mx-3 w-100">
+                <label for="description">Description</label>
+                <textarea
+                  name="description"
+                  id="description"
+                  cols="30"
+                  rows="2"
+                  class="form-control"
+                  v-model="discription"
+                ></textarea>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- <div class="middle flex-grow-1 p-3">
-            <div class="mb-3">
-            <label for="muiltImg">Image Gallery</label>
-            <input
-              type="file"
-              @change="imagePerview($event)"
-              class="form-control"
-              multiple
-              ref="muiltImg"
-            />
-            <div class="image-preview" v-if="files">
-              <div v-for="(file, index) in files" :key="index" class="m-1">
-                  <i class="far fa-times-circle" @click="removeImg(index)"></i>
-                <img :src="file" alt="" />
-              </div>
-            </div>
-
-          </div>
-        </div> -->
-        <div class="rightSide flex-grow-1 p-3">
-          <div class="card">
-            <div class="card-header">Attributes</div>
-            <div class="card-body">
-              <div class="mb-3">
-                <label for="style">Style</label>
-                <vue-tags-input
-                  v-model="styleTag"
-                  :tags="styleTags"
-                  @tags-changed="(newTags) => (styleTags = newTags)"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="size">Size</label>
-                <vue-tags-input
-                  v-model="sizeTag"
-                  :tags="sizeTags"
-                  @tags-changed="(newTags) => (sizeTags = newTags)"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="color">Color</label>
-                <vue-tags-input
-                  v-model="colorTag"
-                  :tags="colorTags"
-                  @tags-changed="
-                    (newTags) => {
-                      colorTags = newTags;
-                      setCrossJoin();
-                    }
-                  "
-                />
+        <div class="otherDetails d-flex">
+          <div class="leftSide mt-3">
+            <div class="card">
+              <div class="card-header">Attributes</div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="style">Style</label>
+                  <vue-tags-input
+                    v-model="styleTag"
+                    :tags="styleTags"
+                    @tags-changed="(newTags) => (styleTags = newTags)"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="size">Size</label>
+                  <vue-tags-input
+                    v-model="sizeTag"
+                    :tags="sizeTags"
+                    @tags-changed="(newTags) => (sizeTags = newTags)"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="color">Color</label>
+                  <vue-tags-input
+                    v-model="colorTag"
+                    :tags="colorTags"
+                    @tags-changed="
+                      (newTags) => {
+                        colorTags = newTags;
+                        setCrossJoin();
+                      }
+                    "
+                  />
+                </div>
               </div>
             </div>
           </div>
-          <div class="card mt-3">
-            <div class="card-header">Stock & image</div>
-            <div class="card-body">
-              <div class="container">
-                <div
-                  class="row mb-3"
-
-                >
-                  <div class="col-12">
-                    <div class="row">
-                        <table class="table" >
-                            <thead>
+          <div class="rightSide flex-grow-1 mt-3">
+            <div class="card ">
+              <div class="card-header">Stock & image</div>
+              <div class="card-body">
+                <div class="container">
+                  <div class="row mb-3">
+                    <div class="col-12">
+                      <div class="row">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>style</th>
+                              <th>size</th>
+                              <th>color</th>
+                              <th>stock</th>
+                              <th>price</th>
+                              <th>images</th>
+                            </tr>
+                          </thead>
+                          <tbody id="proPriceTable">
+                            <tr v-for="(coll, index) in collection" :key="index">
+                              <td>{{ coll[0] }}</td>
+                              <td>{{ coll[1] }}</td>
+                              <td>{{ coll[2] }}</td>
+                              <td>
+                                <input type="number" class="form-control" :key="index"/>
+                              </td>
+                              <td>
+                                <input type="number" class="form-control" :key="index"/>
+                              </td>
+                              <td>
+                                <input type="file" @change="imagePerview($event, index)" class="form-control " multiple ref="muiltImg" :key="index" accept=".png, .jpg, .jpeg,"/>
                                 <tr>
-                                    <th>style</th>
-                                    <th>size</th>
-                                    <th>color</th>
-                                    <th>stock</th>
-                                    <th>price</th>
+                                  <td>
+                                      <div class="image-preview" v-if="files[index]" :key="index">
+                                        <div v-for="(file, i) in files[index][0]" :key="i" class="m-1 position-relative">
+                                          <i  class="far fa-times-circle position-absolute" @click="removeImg(index, i)"></i>
+                                          <img :src="file" alt="" />
+                                        </div>
+                                      </div>
+                                  </td>
                                 </tr>
-                            </thead>
-                            <tbody id="proPriceTable">
-                                <tr v-for="(coll, index) in collection" :key="index">
-                                    <th>{{ coll[0] }}</th>
-                                    <th>{{ coll[1] }}</th>
-                                    <th>{{ coll[2] }}</th>
-                                    <th><input type="number" class="form-control" v-model="stock"/></th>
-                                    <th><input type="number" class="form-control" v-model="price"/></th>
-                                </tr>
-                            </tbody>
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
-                        <button @click.prevent="getTableRow">get table data</button>
-                      <!-- <div class="col-2">{{ ++index }}</div>
-                      <div class="col-2"><input type="text"  disabled value="{{ coll[0] }}"></div>
-                      <div class="col-2"><input type="text" name="details[]" disabled value="{{ coll[1] }}"></div>
-                      <div class="col-2"><input type="text" name="details[]" disabled value="{{ coll[2] }}"></div>
-                      <div class="col-2">
-                        <input type="number" class="form-control" v-model="stock"/>
+                        <!-- <button @click.prevent="getTableRow">get table data</button> -->
                       </div>
-                      <div class="col-2">
-                        <input type="number" class="form-control" v-model="price"/>
-                      </div> -->
                     </div>
-                    <!-- <div class="row mt-3">
-                      <label for="muiltImg">Image Gallery</label>
-                      <input
-                        type="file"
-                        @change="imagePerview($event)"
-                        class="form-control"
-                        multiple
-                        ref="muiltImg"
-                      />
-                      <div class="image-preview" v-if="files">
-                        <div
-                          v-for="(file, index) in files"
-                          :key="index"
-                          class="m-1"
-                        >
-                          <i
-                            class="far fa-times-circle"
-                            @click="removeImg(index)"
-                          ></i>
-                          <img :src="file" alt="" />
-                        </div>
-                      </div>
-                    </div> -->
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <button class="btn btn-success align-self-center mt-3" @click.prevent="addProduct">Submit</button>
       </div>
     </form>
+    <!-- <button @click.prevent="test">test</button> -->
   </vue-final-modal>
+
 </template>
 
 <script>
 import { $vfm, VueFinalModal, ModalsContainer } from "vue-final-modal";
 import VueTagsInput from "@sipec/vue3-tags-input";
+import axios from 'axios'
+
 
 export default {
   components: {
@@ -183,7 +168,7 @@ export default {
   data() {
     return {
       showModal: false,
-      files: [],
+      files: {},
       styleTag: "",
       styleTags: [],
       sizeTag: "",
@@ -191,7 +176,16 @@ export default {
       colorTag: "",
       colorTags: [],
       collection: [],
-      productDataCollection: []
+
+
+      name: "",
+      sku: "",
+      shortDiscription: "",
+      discription: "",
+      productDataCollection: [],
+
+
+
     };
   },
   methods: {
@@ -200,7 +194,6 @@ export default {
     },
     setCrossJoin() {
       this.collection = [];
-      debugger;
       for (let i = 0; i < this.styleTags.length; i++) {
         for (let j = 0; j < this.sizeTags.length; j++) {
           for (let z = 0; z < this.colorTags.length; z++) {
@@ -213,28 +206,48 @@ export default {
         }
       }
     },
-    getTableRow(){
-        debugger;
-        let table = document.getElementById('proPriceTable');
-        let tableData = [];
-
-        for (let i = 0; i < table.rows.length; i++) {
-            for (let j = 1; j < table.rows[i].cells.length; j++) {
-                if(j > 3){
-                    for (let z = 0; z < table.rows[i].cells[j].children.length; z++) {
-                        tableData.push(table.rows[i].cells[j].children[z].value);
-                        break;
-                    }
-                }else{
-                    tableData.push(table.rows[i].cells[j].innerHTML)
-                }
-
-
+    getTableRow() {
+      let table = document.getElementById("proPriceTable");
+      let tableData = [];
+      let tableDataObj = {
+        sku: "",
+        style: "",
+        size: "",
+        color: "",
+        stock: 0,
+        price: 0,
+        images: [],
+      };
+      this.productDataCollection = [];
+      for (let i = 0; i < table.rows.length; i++) {
+        for (let j = 0; j < table.rows[i].cells.length; j++) {
+          if (j >= 3) {
+            for (let z = 0; z < table.rows[i].cells[j].children.length; z++) {
+              if (table.rows[i].cells[j].children[z].type == "file") {
+                tableData.push([...table.rows[i].cells[j].children[z].files]);
+                break;
+              }
+              tableData.push(table.rows[i].cells[j].children[z].value);
+              break;
             }
-            this.productDataCollection.push(tableData)
+          } else {
+            tableData.push(table.rows[i].cells[j].innerHTML);
+          }
         }
-
-    }
+        debugger
+        tableDataObj = {
+          sku: this.sku,
+          style: tableData[0],
+          size: tableData[1],
+          color: tableData[2],
+          stock: tableData[3],
+          price: tableData[4],
+          images: tableData[5],
+        };
+        this.productDataCollection.push(tableDataObj);
+        tableData = [];
+      }
+    },
     // setStyleTag(event){
     //     debugger
     //     this.styleTags.push(event.target.value)
@@ -260,28 +273,99 @@ export default {
     //     [[]]
     //   )
     // },
-    // imagePerview(file) {
-    //   for (const imgfile of file.target.files) {
-    //     this.files.push(URL.createObjectURL(imgfile));
-    //   }
-    //   this.$refs.muiltImg.value = "";
-    // },
-    // removeImg(id) {
-    //   this.files.splice(id, 1);
-    // },
-  },
+    imagePerview(file, index) {
+      debugger
+      let inputImageObj = []
+    //   let inputImageObj = {index: index,img:[]}
+      for (const imgfile of file.target.files) {
+        inputImageObj.push(URL.createObjectURL(imgfile));
+      }
+      this.files[index] = {...[inputImageObj]};
+    },
+    removeImg(index, fileIndex) {
+      debugger
+      this.files[index][0].splice(fileIndex, 1);
+    },
+
+    addProduct(){
+        this.getTableRow()
+        const productData = {
+            name: this.name,
+            sku: this.sku,
+            shortDiscription: this.shortDiscription,
+            discription: this.discription,
+            productDetails: this.productDataCollection
+        }
+        console.log(productData)
+        axios.get('/sanctum/csrf-cookie').then(response => {
+                axios.post('/api/admin/product/add', productData)
+                    .then(response => {
+                        if (response.data.success) {
+                            this.$router.push('/admin/product')
+                        } else {
+                            console.log(response)
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            })
+    },
+
+// test(){
+//       axios.get('/sanctum/csrf-cookie').then(response => {
+//                 axios.get('/api/admin/product/add')
+//                     .then(response => {
+//                         if (response.data.success) {
+//                             this.$router.push('/admin/product')
+//                         } else {
+//                             console.log(response)
+//                         }
+//                     })
+//                     .catch(function (error) {
+//                         console.error(error);
+//                     });
+//             })
+//   }
+//   },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+@import "../../../sass/variables";
 .form_container {
   display: flex;
+  button{
+      width: 200px;
+  }
 }
 .fa-times-circle {
   font-size: 25px;
 }
-.image-preview {
+.leftSide {
+  width: 30%;
+}
+.card-header {
+    background-color: $base-info;
+    color: $text_color_base_info;
+    font-weight: 800;
+    font-size: 30px;
+  }
+.rightSide {
+  width: 70%;
+  padding-left: 10px;
+
+  #proPriceTable {
+    input {
+      min-width: 100px;
+    }
+  }
+  .image-preview {
   display: flex;
+  max-width: 500px;
+  overflow: auto;
+
   i {
     position: absolute;
     margin: 5px;
@@ -294,10 +378,14 @@ export default {
     object-fit: cover;
   }
 }
+}
+
 ::v-deep .modal-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 80%;
+  margin: auto;
 }
 ::v-deep .modal-content {
   position: relative;

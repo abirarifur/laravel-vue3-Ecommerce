@@ -99,7 +99,7 @@ a {
                 .card {
                     flex-grow: 1;
                     justify-content: center;
-                    color: $text_color_dark;
+                    color: $text_color_light;
                     transition: all 0.3s;
                     &:hover {
                         box-shadow: 0 5px 20px 0px gray;
@@ -118,7 +118,7 @@ a {
                         padding: 10px;
                         border-radius: 50%;
                         min-width: 80px;
-                        border: 10px solid white;
+                        border: 10px solid $text_color_light;
                         height: 80px;
                         display: flex;
                         justify-content: center;

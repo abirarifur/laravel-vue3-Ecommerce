@@ -21,7 +21,6 @@ class CreateProductsTable extends Migration
             $table->string('shortDescription')->nullable();
             $table->foreignId('category_id')->constrained();
             $table->foreignId('subcategory_id')->constrained();
-            $table->json('images');
             $table->timestamps();
         });
     }
