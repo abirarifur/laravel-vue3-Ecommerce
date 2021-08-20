@@ -1,4 +1,6 @@
 <template>
+    <FlashMessage position="right bottom" :time=timeForFlash />
+
   <vue-final-modal
     v-model="showModal"
     classes="modal-container"
@@ -52,6 +54,25 @@
               </div>
             </div>
           </div>
+          <div class="card mt-3">
+            <div class="card-header">Categories</div>
+            <div class="card-body d-flex justify-content-between">
+              <div class="mx-3 w-100">
+                <label for="category">Category</label>
+                <select id="category" name="category" v-model="category" class="form-control" @change="getSubCategory">
+                    <option value="" disabled selected>Select Category</option>
+                    <option v-for="(category, i) in categories" :key="i" :value="category.id">{{category.name}}</option>
+                </select>
+              </div>
+              <div class="mx-3 w-100">
+                <label for="subCategory">Subcategory</label>
+                <select id="subCategory" name="subCategory" v-model="subCategory" class="form-control" placeholder="Select Subcategory">
+                    <option value="" disabled selected>Select Subcategory</option>
+                    <option v-for="(subcategory, i) in subCategories" :key="i">{{subcategory.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="otherDetails d-flex">
           <div class="leftSide mt-3">
@@ -60,32 +81,45 @@
               <div class="card-body">
                 <div class="mb-3">
                   <label for="style">Style</label>
-                  <vue-tags-input
-                    v-model="styleTag"
-                    :tags="styleTags"
-                    @tags-changed="(newTags) => (styleTags = newTags)"
-                  />
+
+                  <Multiselect
+                        v-model="styleTags"
+                        mode="tags"
+                        placeholder="Select your Style"
+                        :options="styleOptions"
+                        :searchable="true"
+                        @select="setCrossJoin"
+                        @deselect="setCrossJoin"
+                        @close="setCrossJoin"
+                    />
                 </div>
                 <div class="mb-3">
                   <label for="size">Size</label>
-                  <vue-tags-input
-                    v-model="sizeTag"
-                    :tags="sizeTags"
-                    @tags-changed="(newTags) => (sizeTags = newTags)"
-                  />
+
+                  <Multiselect
+                        v-model="sizeTags"
+                        mode="tags"
+                        placeholder="Select your Sizes"
+                        :options="sizeOptions"
+                        :searchable="true"
+                        @select="setCrossJoin"
+                        @deselect="setCrossJoin"
+                        @close="setCrossJoin"
+                    />
                 </div>
                 <div class="mb-3">
                   <label for="color">Color</label>
-                  <vue-tags-input
-                    v-model="colorTag"
-                    :tags="colorTags"
-                    @tags-changed="
-                      (newTags) => {
-                        colorTags = newTags;
-                        setCrossJoin();
-                      }
-                    "
-                  />
+
+                  <Multiselect
+                        v-model="colorTags"
+                        mode="tags"
+                        placeholder="Select your Color"
+                        :options="colorOptions"
+                        :searchable="true"
+                        @select="setCrossJoin"
+                        @deselect="setCrossJoin"
+                        @close="setCrossJoin"
+                    />
                 </div>
               </div>
             </div>
@@ -145,7 +179,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-success align-self-center mt-3" @click.prevent="addProduct">Submit</button>
+        <button class="btn btn-dark align-self-center mt-3" @click.prevent="addProduct">Submit</button>
       </div>
     </form>
     <!-- <button @click.prevent="test">test</button> -->
@@ -155,35 +189,58 @@
 
 <script>
 import { $vfm, VueFinalModal, ModalsContainer } from "vue-final-modal";
-import VueTagsInput from "@sipec/vue3-tags-input";
+import Multiselect from '@vueform/multiselect'
 import axios from 'axios'
+import FlashMessage from '@smartweb/vue-flash-message';
 
 
 export default {
   components: {
     VueFinalModal,
     ModalsContainer,
-    VueTagsInput,
+    Multiselect
   },
   data() {
     return {
       showModal: false,
+      timeForFlash: 3000,
       files: {},
-      styleTag: "",
+    //   styleTag: "",
       styleTags: [],
-      sizeTag: "",
+    //   sizeTag: "",
       sizeTags: [],
-      colorTag: "",
+    //   colorTag: "",
       colorTags: [],
+
       collection: [],
 
+      categories: [],
+      subCategories:[],
 
+      category: '',
+      subCategory: '',
       name: "",
       sku: "",
       shortDiscription: "",
       discription: "",
       productDataCollection: [],
 
+        styleOptions: [
+          'Leggings',
+          'Bra',
+        ],
+        sizeOptions: [
+          's',
+          'm',
+          'l',
+          'xl',
+          'xxl',
+        ],
+        colorOptions: [
+          'black',
+          'blue',
+          'yellow',
+        ]
 
 
     };
@@ -193,14 +250,15 @@ export default {
       return (this.showModal = true);
     },
     setCrossJoin() {
+
       this.collection = [];
       for (let i = 0; i < this.styleTags.length; i++) {
         for (let j = 0; j < this.sizeTags.length; j++) {
           for (let z = 0; z < this.colorTags.length; z++) {
             this.collection.push([
-              this.styleTags[i].text,
-              this.sizeTags[j].text,
-              this.colorTags[z].text,
+              this.styleTags[i],
+              this.sizeTags[j],
+              this.colorTags[z]
             ]);
           }
         }
@@ -234,7 +292,7 @@ export default {
             tableData.push(table.rows[i].cells[j].innerHTML);
           }
         }
-        debugger
+
         tableDataObj = {
           sku: this.sku,
           style: tableData[0],
@@ -273,8 +331,20 @@ export default {
     //     [[]]
     //   )
     // },
+    getSubCategory(event){
+
+        axios.get('/api/admin/subcategory/getListById', {
+            params:{
+                id: Number(event.target.value)
+            }
+            }).then((reselt) => {
+            this.subCategories = reselt.data;
+        });
+    },
+
+
     imagePerview(file, index) {
-      debugger
+
       let inputImageObj = []
     //   let inputImageObj = {index: index,img:[]}
       for (const imgfile of file.target.files) {
@@ -283,25 +353,39 @@ export default {
       this.files[index] = {...[inputImageObj]};
     },
     removeImg(index, fileIndex) {
-      debugger
+
       this.files[index][0].splice(fileIndex, 1);
     },
 
     addProduct(){
+
         this.getTableRow()
         const productData = {
             name: this.name,
             sku: this.sku,
             shortDiscription: this.shortDiscription,
             discription: this.discription,
-            productDetails: this.productDataCollection
+            productDetails: this.productDataCollection,
+            category: this.category,
         }
         console.log(productData)
+        this.$Progress.start();
         axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.post('/api/admin/product/add', productData)
                     .then(response => {
                         if (response.data.success) {
+                            this.$Progress.finish();
                             this.$router.push('/admin/product')
+                            this.showModal = false
+                            debugger
+                            let mass = {
+                                type: 'success',
+                                title: 'Save Success',
+                                message: 'asdsadasdsa'
+                            }
+                           this.$flashMessage.show(
+                                mass
+                            );
                         } else {
                             console.log(response)
                         }
@@ -328,12 +412,20 @@ export default {
 //             })
 //   }
 //   },
-  }
+  },
+  mounted () {
+
+        axios.get('/api/admin/category').then((reselt) => {
+            this.categories = reselt.data;
+        });
+
+    },
 };
 </script>
-
+<style src="@vueform/multiselect/themes/default.css"></style>
 <style lang="scss" scoped>
 @import "../../../sass/variables";
+@import '@vueform/multiselect/themes/default.css';
 .form_container {
   display: flex;
   button{

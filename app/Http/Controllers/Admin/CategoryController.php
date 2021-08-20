@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return 'hello man';
+        $Categories = Category::select('id', 'name')->get();
+        return $Categories;
     }
 
     /**
@@ -35,7 +37,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return ["success" => true, "message" => "Product Save Successfully"];
+        //
     }
 
     /**

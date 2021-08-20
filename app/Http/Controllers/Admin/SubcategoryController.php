@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class SubcategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return 'hello man';
+        $subCategories = Subcategory::select('id', 'name')->get();
+        return $subCategories;
     }
 
     /**
@@ -22,6 +24,11 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getListById(Request $request)
+    {
+        $subCategoriesById = Subcategory::select('id', 'name')->where('category_id', '=', $request->id)->get();
+        return $subCategoriesById;
+    }
     public function create()
     {
         //
@@ -35,7 +42,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return ["success" => true, "message" => "Product Save Successfully"];
+        //
     }
 
     /**

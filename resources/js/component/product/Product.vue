@@ -46,6 +46,8 @@ import ProductAddModel from "../model/ProductAdd.vue"
 import Navbar from '../bars/Navbar.vue'
 import Sidebar from '../bars/Sidebar.vue'
 export default {
+
+
     components: {
         ProductAddModel,
         Navbar,
@@ -56,6 +58,7 @@ export default {
             this.$refs.productAddModel.showmodel()
         }
     },
+
 };
 </script>
 
