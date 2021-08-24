@@ -3,18 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\Store;
 use Illuminate\Http\Request;
+use App\ImageProcess\ImageProcess;
 
 class ProductController extends Controller
 {
+
+
     /**
+     *
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return 'hello man';
+        return Product::with(
+            ['store',
+            'category:id,name',
+            'subCategory:id,name'
+        ])->get();
     }
 
     /**
@@ -33,8 +43,29 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, ImageProcess $imageProcess)
     {
+            $product = new Product;
+            $product->name          = $request->name;
+            $product->sku           = $request->sku;
+            $product->description   = $request->description;
+            $product->shortDescription = $request->shortDescription;
+            $product->category_id      = $request->category;
+            $product->subcategory_id   = $request->subCategory;
+            $product->save();
+
+            foreach($request->productDetails as $proDetails){
+                $path = $imageProcess->imageSaveAndSend($proDetails['images'], $request->sku);
+                $proStore = new Store;
+                $proStore->product_sku  = $request->sku;
+                $proStore->style_id     = $proDetails['style'];
+                $proStore->size_id      = $proDetails['size'];
+                $proStore->color_id     = $proDetails['color'];
+                $proStore->stock        = $proDetails['stock'];
+                $proStore->price        = $proDetails['price'];
+                $proStore->images       = $path->original;
+                $proStore->save();
+            }
         return ["success" => true, "message" => "Product Save Successfully"];
     }
 

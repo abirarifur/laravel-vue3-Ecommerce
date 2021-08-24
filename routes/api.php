@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+// Route::get('/admin/product/test', [App\Http\Controllers\Admin\ProductController::class, 'index']);
 
 Route::post('/login', [App\Http\Controllers\Auth\AuthController::class, 'login']);
 Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout'])->middleware('auth:sanctum');
@@ -28,6 +29,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
         Route::get('edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit']);
         Route::post('update/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update']);
         Route::delete('delete/{id}', [App\Http\Controllers\Admin\ProductController::class, 'delete']);
+        // Route::resource('/', App\Http\Controllers\Admin\ProductController::class);
     });
     Route::prefix('category')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\CategoryController::class, 'index']);
@@ -43,5 +45,28 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
         Route::get('edit/{id}', [App\Http\Controllers\Admin\SubcategoryController::class, 'edit']);
         Route::post('update/{id}', [App\Http\Controllers\Admin\SubcategoryController::class, 'update']);
         Route::delete('delete/{id}', [App\Http\Controllers\Admin\SubcategoryController::class, 'delete']);
+    });
+    Route::prefix('style')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\StyleController::class, 'index']);
+        Route::post('add', [App\Http\Controllers\Admin\StyleController::class, 'store']);
+        Route::get('edit/{id}', [App\Http\Controllers\Admin\StyleController::class, 'edit']);
+        Route::post('update/{id}', [App\Http\Controllers\Admin\StyleController::class, 'update']);
+        Route::delete('delete/{id}', [App\Http\Controllers\Admin\StyleController::class, 'delete']);
+    });
+    Route::prefix('size')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\SizeController::class, 'index']);
+        Route::get('/getListById', [App\Http\Controllers\Admin\SizeController::class, 'getListById']);
+        Route::post('add', [App\Http\Controllers\Admin\SizeController::class, 'store']);
+        Route::get('edit/{id}', [App\Http\Controllers\Admin\SizeController::class, 'edit']);
+        Route::post('update/{id}', [App\Http\Controllers\Admin\SizeController::class, 'update']);
+        Route::delete('delete/{id}', [App\Http\Controllers\Admin\SizeController::class, 'delete']);
+    });
+    Route::prefix('color')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\ColorController::class, 'index']);
+        Route::get('/getListById', [App\Http\Controllers\Admin\ColorController::class, 'getListById']);
+        Route::post('add', [App\Http\Controllers\Admin\ColorController::class, 'store']);
+        Route::get('edit/{id}', [App\Http\Controllers\Admin\ColorController::class, 'edit']);
+        Route::post('update/{id}', [App\Http\Controllers\Admin\ColorController::class, 'update']);
+        Route::delete('delete/{id}', [App\Http\Controllers\Admin\ColorController::class, 'delete']);
     });
 });

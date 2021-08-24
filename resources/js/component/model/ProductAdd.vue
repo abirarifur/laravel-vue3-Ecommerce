@@ -1,5 +1,4 @@
 <template>
-    <FlashMessage position="right bottom" :time=timeForFlash />
 
   <vue-final-modal
     v-model="showModal"
@@ -33,12 +32,12 @@
               <div class="mx-3 w-100">
                 <label for="shortDiscription">Short Description</label>
                 <textarea
-                  name="shortDiscription"
-                  id="shortDiscription"
+                  name="shortDescription"
+                  id="shortDescription"
                   cols="30"
                   rows="2"
                   class="form-control"
-                  v-model="shortDiscription"
+                  v-model="shortDescription"
                 ></textarea>
               </div>
               <div class="mx-3 w-100">
@@ -49,7 +48,7 @@
                   cols="30"
                   rows="2"
                   class="form-control"
-                  v-model="discription"
+                  v-model="description"
                 ></textarea>
               </div>
             </div>
@@ -68,7 +67,7 @@
                 <label for="subCategory">Subcategory</label>
                 <select id="subCategory" name="subCategory" v-model="subCategory" class="form-control" placeholder="Select Subcategory">
                     <option value="" disabled selected>Select Subcategory</option>
-                    <option v-for="(subcategory, i) in subCategories" :key="i">{{subcategory.name}}</option>
+                    <option v-for="(subcategory, i) in subCategories" :key="i" :value="subcategory.id">{{subcategory.name}}</option>
                 </select>
               </div>
             </div>
@@ -145,9 +144,9 @@
                           </thead>
                           <tbody id="proPriceTable">
                             <tr v-for="(coll, index) in collection" :key="index">
-                              <td>{{ coll[0] }}</td>
-                              <td>{{ coll[1] }}</td>
-                              <td>{{ coll[2] }}</td>
+                              <td>{{ coll[0][1] }} <span style="display: none;">{{ coll[0][0]}}</span> </td>
+                              <td>{{ coll[1][1] }}<span style="display: none;">{{ coll[1][0]}}</span></td>
+                              <td>{{ coll[2][1] }}<span style="display: none;">{{ coll[2][0]}}</span></td>
                               <td>
                                 <input type="number" class="form-control" :key="index"/>
                               </td>
@@ -190,8 +189,7 @@
 <script>
 import { $vfm, VueFinalModal, ModalsContainer } from "vue-final-modal";
 import Multiselect from '@vueform/multiselect'
-import axios from 'axios'
-import FlashMessage from '@smartweb/vue-flash-message';
+// import this.axios from 'this.axios'
 
 
 export default {
@@ -221,26 +219,13 @@ export default {
       subCategory: '',
       name: "",
       sku: "",
-      shortDiscription: "",
-      discription: "",
+      shortDescription: "",
+      description: "",
       productDataCollection: [],
 
-        styleOptions: [
-          'Leggings',
-          'Bra',
-        ],
-        sizeOptions: [
-          's',
-          'm',
-          'l',
-          'xl',
-          'xxl',
-        ],
-        colorOptions: [
-          'black',
-          'blue',
-          'yellow',
-        ]
+        styleOptions: [],
+        sizeOptions: [],
+        colorOptions: []
 
 
     };
@@ -250,7 +235,6 @@ export default {
       return (this.showModal = true);
     },
     setCrossJoin() {
-
       this.collection = [];
       for (let i = 0; i < this.styleTags.length; i++) {
         for (let j = 0; j < this.sizeTags.length; j++) {
@@ -274,7 +258,7 @@ export default {
         color: "",
         stock: 0,
         price: 0,
-        images: [],
+        images: '',
       };
       this.productDataCollection = [];
       for (let i = 0; i < table.rows.length; i++) {
@@ -289,7 +273,8 @@ export default {
               break;
             }
           } else {
-            tableData.push(table.rows[i].cells[j].innerHTML);
+              debugger
+            tableData.push(table.rows[i].cells[j].children[0].innerHTML);
           }
         }
 
@@ -302,6 +287,7 @@ export default {
           price: tableData[4],
           images: tableData[5],
         };
+
         this.productDataCollection.push(tableDataObj);
         tableData = [];
       }
@@ -333,7 +319,7 @@ export default {
     // },
     getSubCategory(event){
 
-        axios.get('/api/admin/subcategory/getListById', {
+        this.axios.get('/api/admin/subcategory/getListById', {
             params:{
                 id: Number(event.target.value)
             }
@@ -360,32 +346,44 @@ export default {
     addProduct(){
 
         this.getTableRow()
-        const productData = {
-            name: this.name,
-            sku: this.sku,
-            shortDiscription: this.shortDiscription,
-            discription: this.discription,
-            productDetails: this.productDataCollection,
-            category: this.category,
+        const productData = new FormData();
+        productData.append('name', this.name);
+        productData.append('sku', this.sku)
+        productData.append('shortDescription', this.shortDescription)
+        productData.append('description', this.description)
+        for( let i = 0; i < this.productDataCollection.length; i++ ){
+            productData.append('productDetails[' + i + '][sku]', this.productDataCollection[i].sku);
+            productData.append('productDetails[' + i + '][style]', this.productDataCollection[i].style);
+            productData.append('productDetails[' + i + '][size]', this.productDataCollection[i].size);
+            productData.append('productDetails[' + i + '][color]', this.productDataCollection[i].color);
+            productData.append('productDetails[' + i + '][stock]', this.productDataCollection[i].stock);
+            productData.append('productDetails[' + i + '][price]', this.productDataCollection[i].price);
+            for( let j = 0; j < this.productDataCollection[i].images.length; j++ ){
+              productData.append('productDetails[' + i + '][images]['+j+']', this.productDataCollection[i].images[j])
+            }
         }
-        console.log(productData)
+
+        productData.append('category', this.category)
+        productData.append('subCategory', this.subCategory)
+
+        // productData.append('productDetails', this.productDataCollection[0].images)
+        // const productData = {
+        //     name: this.name,
+        //     sku: this.sku,
+        //     shortDescription: this.shortDescription,
+        //     description: this.description,
+        //     productDetails: this.productDataCollection,
+        //     category: this.category,
+        //     subCategory: this.subCategory,
+        // }
         this.$Progress.start();
-        axios.get('/sanctum/csrf-cookie').then(response => {
-                axios.post('/api/admin/product/add', productData)
+        this.axios.get('/sanctum/csrf-cookie').then(response => {
+                this.axios.post('/api/admin/product/add', productData, { headers: { "Content-Type": "multipart/form-data" } })
                     .then(response => {
                         if (response.data.success) {
                             this.$Progress.finish();
-                            this.$router.push('/admin/product')
                             this.showModal = false
-                            debugger
-                            let mass = {
-                                type: 'success',
-                                title: 'Save Success',
-                                message: 'asdsadasdsa'
-                            }
-                           this.$flashMessage.show(
-                                mass
-                            );
+                            this.$router.push('/admin/product')
                         } else {
                             console.log(response)
                         }
@@ -397,8 +395,8 @@ export default {
     },
 
 // test(){
-//       axios.get('/sanctum/csrf-cookie').then(response => {
-//                 axios.get('/api/admin/product/add')
+//       this.axios.get('/sanctum/csrf-cookie').then(response => {
+//                 this.axios.get('/api/admin/product/add')
 //                     .then(response => {
 //                         if (response.data.success) {
 //                             this.$router.push('/admin/product')
@@ -415,12 +413,38 @@ export default {
   },
   mounted () {
 
-        axios.get('/api/admin/category').then((reselt) => {
+    },
+    created () {
+        this.axios.get('/api/admin/category').then((reselt) => {
             this.categories = reselt.data;
         });
-
+        this.axios.get('/api/admin/style').then((reselt) => {
+            reselt.data.forEach((item) => {
+                this.styleOptions.push({
+                value: [item.id, item.name],
+                label: item.name
+                });
+            })
+        });
+        this.axios.get('/api/admin/size').then((reselt) => {
+            reselt.data.forEach((item) => {
+                this.sizeOptions.push({
+                value: [item.id, item.name],
+                label: item.name
+                });
+            })
+        });
+        this.axios.get('/api/admin/color').then((reselt) => {
+            reselt.data.forEach((item) => {
+                this.colorOptions.push({
+                value: [item.id, item.name],
+                label: item.name
+                });
+            })
+        });
     },
 };
+
 </script>
 <style src="@vueform/multiselect/themes/default.css"></style>
 <style lang="scss" scoped>

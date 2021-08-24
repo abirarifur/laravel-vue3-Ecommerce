@@ -6,7 +6,7 @@ import Main from './Main'
 import Navbar from './component/bars/Navbar';
 import Sidebar from './component/bars/Sidebar';
 import VueProgressBar from "@aacassandra/vue3-progressbar";
-import FlashMessage from '@smartweb/vue-flash-message';
+import axios from 'axios';
 const app = createApp(Main);
 
 app.component('navbar' , Navbar);
@@ -24,5 +24,6 @@ const options = {
   location: "top",
   inverse: false,
 };
-app.use(router).use(VueProgressBar, options).use(FlashMessage);
+app.use(router).use(VueProgressBar, options);
+app.config.globalProperties.axios=axios
 app.mount('#app');
