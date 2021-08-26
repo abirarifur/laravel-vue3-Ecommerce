@@ -5,7 +5,7 @@
         <div class="card m-3">
           <div class="card-header text-white bg-dark">Products</div>
           <div class="card-body bg-info d-flex justify-content-between">
-            <div class="amount">50</div>
+            <div class="amount">{{totalProduct}}</div>
             <i class="fas fa-box"></i>
           </div>
         </div>
@@ -40,8 +40,8 @@
             </div>
           </div>
         </div>
-        <div class="productChart m-3 justify-content-between">
-          <div class="card">
+        <div class="productChart m-3 d-flex justify-content-between">
+          <div class="card w-100">
             <div class="card-header bg-dark text-white">Orders Chart</div>
             <div class="card-body">
             </div>
@@ -57,10 +57,12 @@ import ProductChart from "./charts/ProductCharts.vue"
 export default {
   components: {
       ProductChart,
+
   },
   data() {
       return {
-          productchartdata: []
+          productchartdata: [],
+          totalProduct: 0
       }
   },
  methods: {
@@ -69,6 +71,7 @@ export default {
        await this.axios.get("/sanctum/csrf-cookie").then( async (response) => {
        await this.axios.get("/api/admin/product/product-count-date-wise").then((data) => {
                 this.productchartdata = data.data
+                this.totalProduct = data.data.reduce((a, b) => a + b);
             });
         });
       }

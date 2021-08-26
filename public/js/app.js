@@ -19848,7 +19848,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      productchartdata: []
+      productchartdata: [],
+      totalProduct: 0
     };
   },
   methods: {
@@ -19871,6 +19872,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                             _context.next = 2;
                             return _this.axios.get("/api/admin/product/product-count-date-wise").then(function (data) {
                               _this.productchartdata = data.data;
+                              _this.totalProduct = data.data.reduce(function (a, b) {
+                                return a + b;
+                              });
                             });
 
                           case 2:
@@ -20493,33 +20497,58 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "content"
 };
-
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"short-details\"><div class=\"card m-3\"><div class=\"card-header text-white bg-dark\">Products</div><div class=\"card-body bg-info d-flex justify-content-between\"><div class=\"amount\">50</div><i class=\"fas fa-box\"></i></div></div><div class=\"card m-3\"><div class=\"card-header text-white bg-dark\">Orders</div><div class=\"card-body bg-success d-flex justify-content-between\"><div class=\"amount\">50</div><i class=\"fas fa-dolly\"></i></div></div><div class=\"card m-3\"><div class=\"card-header text-white bg-dark\">Today&#39;s Amount</div><div class=\"card-body bg-warning d-flex justify-content-between\"><div class=\"amount\">$50</div><i class=\"fas fa-coins\"></i></div></div><div class=\"card m-3\"><div class=\"card-header text-white bg-dark\">Monthly Amount</div><div class=\"card-body bg-secondary d-flex justify-content-between\"><div class=\"amount\">$50</div><i class=\"fas fa-hand-holding-usd\"></i></div></div></div>", 1);
-
+var _hoisted_3 = {
+  "class": "short-details"
+};
 var _hoisted_4 = {
+  "class": "card m-3"
+};
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "card-header text-white bg-dark"
+}, "Products", -1
+/* HOISTED */
+);
+
+var _hoisted_6 = {
+  "class": "card-body bg-info d-flex justify-content-between"
+};
+var _hoisted_7 = {
+  "class": "amount"
+};
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+  "class": "fas fa-box"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card m-3\"><div class=\"card-header text-white bg-dark\">Orders</div><div class=\"card-body bg-success d-flex justify-content-between\"><div class=\"amount\">50</div><i class=\"fas fa-dolly\"></i></div></div><div class=\"card m-3\"><div class=\"card-header text-white bg-dark\">Today&#39;s Amount</div><div class=\"card-body bg-warning d-flex justify-content-between\"><div class=\"amount\">$50</div><i class=\"fas fa-coins\"></i></div></div><div class=\"card m-3\"><div class=\"card-header text-white bg-dark\">Monthly Amount</div><div class=\"card-body bg-secondary d-flex justify-content-between\"><div class=\"amount\">$50</div><i class=\"fas fa-hand-holding-usd\"></i></div></div>", 3);
+
+var _hoisted_12 = {
   "class": "chartDetails d-flex"
 };
-var _hoisted_5 = {
+var _hoisted_13 = {
   "class": "orderChart m-3 justify-content-between"
 };
-var _hoisted_6 = {
+var _hoisted_14 = {
   "class": "card"
 };
 
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "card-header bg-dark text-white"
 }, "Products Chart", -1
 /* HOISTED */
 );
 
-var _hoisted_8 = {
+var _hoisted_16 = {
   "class": "card-body"
 };
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "productChart m-3 justify-content-between"
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "productChart m-3 d-flex justify-content-between"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "card"
+  "class": "card w-100"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "card-header bg-dark text-white"
 }, "Orders Chart"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -20531,12 +20560,14 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ProductChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ProductChart");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [this.productchartdata.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ProductChart, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.totalProduct), 1
+  /* TEXT */
+  ), _hoisted_8])]), _hoisted_9]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [this.productchartdata.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ProductChart, {
     key: 0,
     productchartdata: $data.productchartdata
   }, null, 8
   /* PROPS */
-  , ["productchartdata"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), _hoisted_9])])]);
+  , ["productchartdata"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), _hoisted_17])])]);
 }
 
 /***/ }),
