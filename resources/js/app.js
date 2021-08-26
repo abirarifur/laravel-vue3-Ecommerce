@@ -3,14 +3,15 @@ require('./bootstrap');
 import { createApp } from 'vue';
 import router from './routes.js';
 import Main from './Main'
-import Navbar from './component/bars/Navbar';
-import Sidebar from './component/bars/Sidebar';
+// import Navbar from './component/bars/Navbar';
+// import Sidebar from './component/bars/Sidebar';
+
 import VueProgressBar from "@aacassandra/vue3-progressbar";
 import axios from 'axios';
 const app = createApp(Main);
 
-app.component('navbar' , Navbar);
-app.component('sidebar' , Sidebar);
+// app.component('navbar' , Navbar);
+// app.component('sidebar' , Sidebar);
 const options = {
   color: "#00C479",
   failedColor: "#874b4b",

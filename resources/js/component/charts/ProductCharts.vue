@@ -1,25 +1,50 @@
 <template>
-  <canvas id="productChart" ref="productChart"></canvas>
+  <canvas id="productChart" ref="productChart" class="shadow"></canvas>
 </template>
 
 <script>
 import Chart from "chart.js/auto/auto";
 export default {
+props: {
+    productchartdata: {
+        type: Array,
+    },
+},
   data() {
-    return {};
+    return {
+        months: ['Jan', 'Feb', 'Mar', 'Apr','May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        daysInCurrentMonth: 0,
+        currentMonth: 0,
+        productchart: []
+    };
   },
   methods: {
+    setMonth(){
+        let dt = new Date();
+        this.currentMonth = dt.getMonth() + 1;
+        let year = dt.getFullYear();
+        this.daysInCurrentMonth = new Date(year, this.currentMonth, 0).getDate();
+    },
+    totalDateForChart() {
+        let dateData = [];
+        for (let i = 0; i < this.daysInCurrentMonth; i++){
+        dateData.push(this.months[ this.currentMonth - 1 ]+'-'+ (i+1))
+        }
+        return dateData;
+    },
+
     productChart() {
-      var ctx = document.getElementById("productChart");
-      var myChart = new Chart(ctx, {
+        debugger
+      let ctx = document.getElementById("productChart");
+      let myChart = new Chart(ctx, {
         type: "line",
         data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: this.totalDateForChart(),
           datasets: [
             {
               fill: true,
-              label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3],
+              label: "# Added Product",
+              data: this.productchartdata,
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(54, 162, 235, 0.2)",
@@ -36,7 +61,7 @@ export default {
                 "rgba(153, 102, 255, 1)",
                 "rgba(255, 159, 64, 1)",
               ],
-              borderWidth: 1,
+              borderWidth: 5,
             },
           ],
         },
@@ -51,8 +76,15 @@ export default {
     },
   },
   mounted() {
+
+    this.totalDateForChart();
     this.productChart();
+
   },
+  beforeMount () {
+      this.setMonth();;
+  },
+
 };
 </script>
 

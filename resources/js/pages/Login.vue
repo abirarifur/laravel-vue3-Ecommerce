@@ -1,6 +1,6 @@
 <template>
     <div class="login-form d-flex justify-content-center align-items-center w-100" >
-        <div class="card">
+        <div class="card shadow">
         <div class="card-header"><img src="/img/logo.png" alt=""></div>
         <div class="card-body">
             <p>{{loginFalledMassage}}</p>
@@ -60,5 +60,20 @@ import axios from "axios"
 </script>
 
 <style lang="scss" scoped>
+@import '../../sass/variables';
+.card {
+    min-width: 400px !important;
 
+    .card-header {
+        background-color: $base-info !important;
+        img{
+            border-radius: 50%;
+        }
+    }
+    .card-body{
+        .btn{
+            width: 150px !important;
+        }
+    }
+}
 </style>

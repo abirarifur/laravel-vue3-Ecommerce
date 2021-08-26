@@ -1,39 +1,33 @@
 <template>
-<div class="left-side">
-            <sidebar></sidebar>
-        </div>
-<div class="main-header">
-            <navbar></navbar>
-        </div>
   <div class="right-side mt-5">
     <div class="content">
       <div class="short-details">
         <div class="card m-3">
-          <div class="card-header bg-dark">Products</div>
+          <div class="card-header text-white bg-dark">Products</div>
           <div class="card-body bg-info d-flex justify-content-between">
             <div class="amount">50</div>
-            <i class="fab fa-product-hunt"></i>
+            <i class="fas fa-box"></i>
           </div>
         </div>
         <div class="card m-3">
-          <div class="card-header bg-dark">Orders</div>
+          <div class="card-header text-white bg-dark">Orders</div>
           <div class="card-body bg-success d-flex justify-content-between">
             <div class="amount">50</div>
-            <i class="fab fa-product-hunt"></i>
+            <i class="fas fa-dolly"></i>
           </div>
         </div>
         <div class="card m-3">
-          <div class="card-header bg-dark">Today's Amount</div>
+          <div class="card-header text-white bg-dark">Today's Amount</div>
           <div class="card-body bg-warning d-flex justify-content-between">
-            <div class="amount">50</div>
-            <i class="fab fa-product-hunt"></i>
+            <div class="amount">$50</div>
+            <i class="fas fa-coins"></i>
           </div>
         </div>
         <div class="card m-3">
-          <div class="card-header bg-dark">Monthly Amount</div>
+          <div class="card-header text-white bg-dark">Monthly Amount</div>
           <div class="card-body bg-secondary d-flex justify-content-between">
-            <div class="amount">50</div>
-            <i class="fab fa-product-hunt"></i>
+            <div class="amount">$50</div>
+            <i class="fas fa-hand-holding-usd"></i>
           </div>
         </div>
       </div>
@@ -42,7 +36,7 @@
           <div class="card">
             <div class="card-header bg-dark text-white">Products Chart</div>
             <div class="card-body">
-                <ProductChart />
+                <ProductChart :productchartdata="productchartdata" v-if="this.productchartdata.length > 0"/>
             </div>
           </div>
         </div>
@@ -60,22 +54,27 @@
 
 <script>
 import ProductChart from "./charts/ProductCharts.vue"
-// import Navbar from './bars/Navbar.vue'
-// import Sidebar from './bars/Sidebar.vue'
 export default {
   components: {
       ProductChart,
-    //   Navbar,
-    //   Sidebar
   },
   data() {
-    return {
-
-    }
+      return {
+          productchartdata: []
+      }
   },
-  methods: {
-
+ methods: {
+      async getCurrentMonthData(){
+          debugger
+       await this.axios.get("/sanctum/csrf-cookie").then( async (response) => {
+       await this.axios.get("/api/admin/product/product-count-date-wise").then((data) => {
+                this.productchartdata = data.data
+            });
+        });
+      }
   },
-  mounted() {},
+  beforeMount () {
+     this.getCurrentMonthData();
+  },
 };
 </script>

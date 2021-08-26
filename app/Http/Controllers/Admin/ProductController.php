@@ -7,6 +7,9 @@ use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use App\ImageProcess\ImageProcess;
+use Carbon\CarbonPeriod;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -25,6 +28,16 @@ class ProductController extends Controller
             'category:id,name',
             'subCategory:id,name'
         ])->get();
+    }
+    public function productCountDateWise()
+    {
+        $period = CarbonPeriod::create(Carbon::now()->startOfMonth(), Carbon::now());
+        $dataCount = [];
+        foreach ($period as $date){
+            $dataCount[] = Product::whereDate('created_at', $date->format('Y-m-d'))->count();
+        }
+
+        return $dataCount;
     }
 
     /**

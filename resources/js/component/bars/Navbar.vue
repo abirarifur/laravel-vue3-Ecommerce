@@ -48,7 +48,7 @@ export default {
           .then((res) => {
             if (res.data.logout == true) {
                 window.laravel.isLoggedin = false;
-                router.push('/login');
+                router.push('/admin/login');
             }
 
           })

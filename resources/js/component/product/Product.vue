@@ -1,10 +1,5 @@
 <template>
-  <div class="left-side">
-    <Sidebar />
-  </div>
-  <div class="main-header">
-    <navbar></navbar>
-  </div>
+
   <div class="right-side">
     <div class="content p-5">
       <h3>Products List</h3>
@@ -26,7 +21,7 @@
             </thead>
             <tbody>
                 <tr v-for="(product, index) in productList" :key="index">
-                    <td>1</td>
+                    <td>{{++index}}</td>
                     <td>{{product.sku}}</td>
                     <td>{{product.name}}</td>
                     <td>{{product.category.name}}</td>
@@ -45,15 +40,12 @@
 </template>
 
 <script>
+
 import ProductAddModel from "../model/ProductAdd.vue";
-import Navbar from "../bars/Navbar.vue";
-import Sidebar from "../bars/Sidebar.vue";
 import { h } from 'vue'
 export default {
   components: {
     ProductAddModel,
-    Navbar,
-    Sidebar,
   },
   data() {
     return {
@@ -69,7 +61,6 @@ export default {
         this.axios.get("/api/admin/product").then((data) => {
           console.log(data.data);
           this.productList = data.data;
-
         });
       });
     },
@@ -82,6 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 h3 {
   font-family: "Montserrat Alternates";
   font-weight: bold;

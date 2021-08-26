@@ -12,6 +12,10 @@ a:hover {
   cursor: pointer;
 }
 
+.router-link-active {
+  color: #17a16a93;
+}
+
 #app {
   display: flex;
   height: 100vh;
@@ -27,7 +31,7 @@ a:hover {
   margin-top: 78px;
 }
 #app .left-side .sidebar-wrapper hr {
-  color: #17A169;
+  color: #17a16a93;
 }
 #app .left-side .sidebar-wrapper .menu {
   position: sticky;
@@ -103,6 +107,7 @@ a:hover {
   justify-content: center;
   color: #222222;
   transition: all 0.3s;
+  box-shadow: 0 0 10px 0px gray;
 }
 #app .right-side .content .short-details .card:hover {
   box-shadow: 0 5px 20px 0px gray;
@@ -115,13 +120,12 @@ a:hover {
   font-weight: 400;
 }
 #app .right-side .content .short-details .card .amount {
-  font-size: 24px;
+  font-size: 50px;
   font-family: "Montserrat Alternates";
   font-weight: 600;
   padding: 10px;
   border-radius: 50%;
   min-width: 80px;
-  border: 10px solid #222222;
   height: 80px;
   display: flex;
   justify-content: center;
@@ -129,7 +133,7 @@ a:hover {
 }
 #app .right-side .content .short-details .card i {
   font-size: 80px;
-  opacity: 1;
+  opacity: 0.5;
 }
 #app .right-side .content .chartDetails {
   display: flex;

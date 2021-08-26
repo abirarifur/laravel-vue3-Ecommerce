@@ -13,7 +13,9 @@ a {
         cursor: pointer;
     }
 }
-
+.router-link-active{
+    color: $base-info;
+}
 #app {
     display: flex;
     height: 100vh;
@@ -101,6 +103,8 @@ a {
                     justify-content: center;
                     color: $text_color_light;
                     transition: all 0.3s;
+
+                    box-shadow: 0 0 10px 0px gray;
                     &:hover {
                         box-shadow: 0 5px 20px 0px gray;
                         cursor: pointer;
@@ -112,13 +116,13 @@ a {
                         font-weight: 400;
                     }
                     .amount {
-                        font-size: 24px;
+                        font-size: 50px;
                         font-family: "Montserrat Alternates";
                         font-weight: 600;
                         padding: 10px;
                         border-radius: 50%;
                         min-width: 80px;
-                        border: 10px solid $text_color_light;
+                        // border: 10px solid $text_color_light;
                         height: 80px;
                         display: flex;
                         justify-content: center;
@@ -126,7 +130,8 @@ a {
                     }
                     i {
                         font-size: 80px;
-                        opacity: 1;
+                        opacity: 0.5;
+
                     }
                 }
             }

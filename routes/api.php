@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 // Route::get('/admin/product/test', [App\Http\Controllers\Admin\ProductController::class, 'index']);
-
 Route::post('/login', [App\Http\Controllers\Auth\AuthController::class, 'login']);
 Route::post('/logout', [App\Http\Controllers\Auth\AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'product', 'middleware' => 'auth:sanctum'], function () {
         Route::get('/', [App\Http\Controllers\Admin\ProductController::class, 'index']);
+        Route::get('/product-count-date-wise', [App\Http\Controllers\Admin\ProductController::class, 'productCountDateWise']);
         Route::post('add', [App\Http\Controllers\Admin\ProductController::class, 'store']);
         Route::get('edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit']);
         Route::post('update/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update']);
