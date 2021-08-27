@@ -8,7 +8,9 @@ import Main from './Main'
 
 import VueProgressBar from "@aacassandra/vue3-progressbar";
 import axios from 'axios';
+
 const app = createApp(Main);
+
 
 // app.component('navbar' , Navbar);
 // app.component('sidebar' , Sidebar);

@@ -21,10 +21,13 @@
     "dependencies": {
         "@aacassandra/vue3-progressbar": "^1.0.3",
         "@vueform/multiselect": "^2.1.2",
+        "ag-grid-community": "^26.0.0",
+        "ag-grid-vue3": "^26.0.0",
         "chart.js": "^3.5.0",
         "sass": "^1.37.5",
         "sass-loader": "^12.1.0",
         "vue": "^3.2.2",
+        "vue-class-component": "^8.0.0-rc.1",
         "vue-final-modal": "^3.4.0",
         "vue-router": "^4.0.11"
     }

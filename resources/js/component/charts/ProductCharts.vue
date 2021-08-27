@@ -34,7 +34,6 @@ props: {
     },
 
     productChart() {
-        debugger
       let ctx = document.getElementById("productChart");
       let myChart = new Chart(ctx, {
         type: "line",
