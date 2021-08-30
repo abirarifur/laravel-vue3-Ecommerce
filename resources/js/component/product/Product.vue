@@ -14,24 +14,27 @@
             :columnDefs="columnDefs"
             :defaultColDef="defaultLayout"
             :rowData="productList"
+            pagination=true
             >
         </ag-grid-vue>
 
     </div>
   </div>
   <product-add-model ref="productAddModel"></product-add-model>
+  <product-details-view ref="productDetailsModel"></product-details-view>
 </template>
 
 <script>
-
-import ProductAddModel from "../model/ProductAdd.vue";
+import ProductDetailsView from '../modal/ProductDetailsView.vue'
+import ProductAddModel from "../modal/ProductAdd.vue";
 import { AgGridVue } from "ag-grid-vue3";
 import btnCellRenderer from './BtnCellrenderer.vue'
 export default {
   components: {
     ProductAddModel,
     AgGridVue,
-    btnCellRenderer
+    btnCellRenderer,
+    ProductDetailsView
   },
   data() {
     return {
@@ -43,15 +46,18 @@ export default {
                 {headerName:'Subcategory', field: 'sub_category.name' },
                 {headerName:'Short description', field: 'shortDescription' },
                 {headerName:'Description', field: 'description' },
-                {headerName:'Action', cellRenderer: 'btnCellRenderer',
-                cellRendererParams: (params) =>{
-                    return params;
-                }, minWidth: 300 },
+                {headerName:'Action', cellRenderer: 'btnCellRenderer',cellRendererParams: {
+                    onClick: this.showmodelProductDetails.bind(this)
+                    }, minWidth: 300 },
 
             ],
         defaultLayout: {
-            flex: 1,
+            sortable: true,
             filter: true,
+            resizable: true,
+            floatingFilter: true,
+            flex: 1
+
         },
         // frameworkComponents: null
     }
@@ -59,6 +65,26 @@ export default {
   methods: {
     showmodel() {
       this.$refs.productAddModel.showmodel();
+    },
+    showmodelProductDetails(params, btnName) {
+        debugger
+        if(btnName == 'view'){
+            this.$refs.productDetailsModel.openModel(params.data);
+        }
+        else if(btnName == 'edit'){
+            this.$refs.productDetailsModel.openModel(params.data);
+        }
+        else if(btnName == 'delete'){
+            axios.get("/sanctum/csrf-cookie").then((response) => {
+                debugger
+                this.axios.get("/api/admin/delete/"+params.data.id).then((data) => {
+                    if(data.success == true){
+                        this.getProductList()
+                    }
+                });
+            });
+        }
+
     },
     getProductList() {
       axios.get("/sanctum/csrf-cookie").then((response) => {
@@ -68,7 +94,9 @@ export default {
         });
       });
     },
+
   },
+
 
   mounted() {
     this.getProductList();

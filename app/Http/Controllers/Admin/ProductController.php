@@ -26,7 +26,10 @@ class ProductController extends Controller
         return Product::with(
             ['store',
             'category:id,name',
-            'subCategory:id,name'
+            'subCategory:id,name',
+            'store.style:id,name',
+            'store.size:id,name',
+            'store.color:id,name'
         ])->get();
     }
     public function productCountDateWise()
@@ -124,6 +127,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $id;
+        $pro = Product::findOrFail($id);
+        $pro->delete();
+        return response()->success();
     }
 }
