@@ -37,10 +37,12 @@ class ProductController extends Controller
         $period = CarbonPeriod::create(Carbon::now()->startOfMonth(), Carbon::now());
         $dataCount = [];
         foreach ($period as $date){
-            $dataCount[] = Product::whereDate('created_at', $date->format('Y-m-d'))->count();
-        }
+            $dataCount[] = Product::whereDate('created_at', $date->format('Y-m-d'))->withTrashed()->count();
 
-        return $dataCount;
+        }
+        $currentTotalProduct = Product::count();
+
+        return ["totalProductCount" => $dataCount, "currentTotalProduct" => $currentTotalProduct];
     }
 
     /**
@@ -127,9 +129,11 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        return $id;
         $pro = Product::findOrFail($id);
         $pro->delete();
-        return response()->success();
+        return response()->json([
+            "success" => true,
+            "message" => "Data Removed Successfully."
+        ]);
     }
 }

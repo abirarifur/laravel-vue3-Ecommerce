@@ -21,23 +21,27 @@
     </div>
   </div>
   <product-add-model ref="productAddModel"></product-add-model>
+  <product-edit-model ref="productEditModel"></product-edit-model>
   <product-details-view ref="productDetailsModel"></product-details-view>
 </template>
 
 <script>
 import ProductDetailsView from '../modal/ProductDetailsView.vue'
 import ProductAddModel from "../modal/ProductAdd.vue";
+import ProductEditModel from "../modal/ProductEdit.vue";
 import { AgGridVue } from "ag-grid-vue3";
 import btnCellRenderer from './BtnCellrenderer.vue'
 export default {
   components: {
     ProductAddModel,
+    ProductEditModel,
     AgGridVue,
     btnCellRenderer,
     ProductDetailsView
   },
   data() {
     return {
+        item: [],
       productList: [],
       columnDefs : [
                 {headerName:'SKU', field: 'sku'},
@@ -67,17 +71,16 @@ export default {
       this.$refs.productAddModel.showmodel();
     },
     showmodelProductDetails(params, btnName) {
-        debugger
         if(btnName == 'view'){
             this.$refs.productDetailsModel.openModel(params.data);
         }
         else if(btnName == 'edit'){
-            this.$refs.productDetailsModel.openModel(params.data);
+            this.$refs.productEditModel.showmodel(params.data);
+            this.item = params.data;
         }
         else if(btnName == 'delete'){
             axios.get("/sanctum/csrf-cookie").then((response) => {
-                debugger
-                this.axios.get("/api/admin/delete/"+params.data.id).then((data) => {
+                this.axios.delete(`/api/admin/product/delete/${params.data.id}`).then((data) => {
                     if(data.success == true){
                         this.getProductList()
                     }
@@ -98,12 +101,14 @@ export default {
   },
 
 
-  mounted() {
-    this.getProductList();
-  },
+//   mounted() {
+//     this.getProductList();
+//   },
   beforeMount () {
+      this.getProductList();
     //   this.frameworkComponents = btnCellRenderer;
   },
+
 };
 </script>
 

@@ -28,7 +28,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
         Route::post('add', [App\Http\Controllers\Admin\ProductController::class, 'store']);
         Route::get('edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit']);
         Route::post('update/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update']);
-        Route::delete('delete/{id}', [App\Http\Controllers\Admin\ProductController::class, 'delete']);
+        Route::delete('delete/{id}', [App\Http\Controllers\Admin\ProductController::class, 'destroy']);
         // Route::resource('/', App\Http\Controllers\Admin\ProductController::class);
     });
     Route::prefix('category')->group(function () {

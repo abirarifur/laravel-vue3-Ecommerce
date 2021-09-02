@@ -344,7 +344,8 @@ export default {
     },
 
     addProduct(){
-
+        debugger
+        this.styleTags;
         this.getTableRow()
         const productData = new FormData();
         productData.append('name', this.name);
