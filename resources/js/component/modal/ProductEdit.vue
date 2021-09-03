@@ -239,18 +239,22 @@ export default {
         this.shortDescription = data.shortDescription;
         this.description = data.description;
         this.category = data.category_id
-        this.styleTags = new Set()
 
-        ;
-        let styletagsArray = []
-        for (let i = 0; i < data.store.length; i++) {
-            let index1 = data.store[i].style.id;
-            let index2 = data.store[i].style.name;
-            styletagsArray.push([index1, index2])
-            this.styleTags.add(styletagsArray)
+        data.store.filter((item) => {
+        let iStyle = this.styleTags.findIndex(x => (x[0] == item.style_id));
+        let iSize = this.sizeTags.findIndex(x => (x[0] == item.size_id));
+        let iColor = this.colorTags.findIndex(x => (x[0] == item.color_id));
+        if(iStyle <= -1){
+            this.styleTags.push([item.style.id, item.style.name]);
         }
-
-        // this.getSubCategory(data.category_id);
+        if(iSize <= -1){
+            this.sizeTags.push([item.size.id, item.size.name]);
+        }
+        if(iColor <= -1){
+            this.colorTags.push([item.color.id, item.color.name]);
+        }
+        return null;
+        });
 
       return (this.showModal = true);
     },
