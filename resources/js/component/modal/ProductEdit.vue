@@ -87,9 +87,9 @@
                         placeholder="Select your Style"
                         :options="styleOptions"
                         :searchable="true"
-                        @select="setCrossJoin"
-                        @deselect="setCrossJoin"
-                        @close="setCrossJoin"
+                        @select="newAttributesAdd"
+                        @deselect="newAttributesAdd"
+                        @close="newAttributesAdd"
                     />
                 </div>
                 <div class="mb-3">
@@ -101,9 +101,9 @@
                         placeholder="Select your Sizes"
                         :options="sizeOptions"
                         :searchable="true"
-                        @select="setCrossJoin"
-                        @deselect="setCrossJoin"
-                        @close="setCrossJoin"
+                        @select="newAttributesAdd"
+                        @deselect="newAttributesAdd"
+                        @close="newAttributesAdd"
                     />
                 </div>
                 <div class="mb-3">
@@ -115,9 +115,9 @@
                         placeholder="Select your Color"
                         :options="colorOptions"
                         :searchable="true"
-                        @select="setCrossJoin"
-                        @deselect="setCrossJoin"
-                        @close="setCrossJoin"
+                        @select="newAttributesAdd"
+                        @deselect="newAttributesAdd"
+                        @close="newAttributesAdd"
                     />
                 </div>
               </div>
@@ -144,17 +144,20 @@
                           </thead>
                           <tbody id="proPriceTable">
                             <tr v-for="(coll, index) in collection" :key="index">
-                              <td>{{ coll[0][1] }} <span style="display: none;">{{ coll[0][0]}}</span> </td>
-                              <td>{{ coll[1][1] }}<span style="display: none;">{{ coll[1][0]}}</span></td>
-                              <td>{{ coll[2][1] }}<span style="display: none;">{{ coll[2][0]}}</span></td>
+                              <td>{{ coll.tags[0][1] }} <span style="display: none;">{{ coll.tags[0][0]}}</span> </td>
+                              <td>{{ coll.tags[1][1] }}<span style="display: none;">{{ coll.tags[1][0]}}</span></td>
+                              <td>{{ coll.tags[2][1] }}<span style="display: none;">{{ coll.tags[2][0]}}</span></td>
+                              <!-- <td>{{ coll.tags.name }} <span style="display: none;">{{ coll.style_id}}</span> </td>
+                              <td>{{ coll.size.name }}<span style="display: none;">{{ coll.size_id}}</span></td>
+                              <td>{{ coll.color.name }}<span style="display: none;">{{ coll.color_id}}</span></td> -->
                               <td>
-                                <input type="number" class="form-control" :key="index"/>
+                                <input type="number" class="form-control" :key="index" :value="coll.data?.stock"/>
                               </td>
                               <td>
-                                <input type="number" class="form-control" :key="index"/>
+                                <input type="number" class="form-control" :key="index" :value="coll.data?.price"/>
                               </td>
                               <td>
-                                <input type="file" @change="imagePerview($event, index)" class="form-control " multiple ref="muiltImg" :key="index" accept=".png, .jpg, .jpeg,"/>
+                                <input type="file" @change="imagePerview($event, index)" class="form-control " multiple ref="muiltImg" :key="index" accept=".png, .jpg, .jpeg," />
                                 <tr>
                                   <td>
                                       <div class="image-preview" v-if="files[index]" :key="index">
@@ -239,6 +242,8 @@ export default {
         this.shortDescription = data.shortDescription;
         this.description = data.description;
         this.category = data.category_id
+        this.getSubCategory(data.category_id)
+        this.subCategory = data.subcategory_id
 
         data.store.filter((item) => {
         let iStyle = this.styleTags.findIndex(x => (x[0] == item.style_id));
@@ -255,66 +260,109 @@ export default {
         }
         return null;
         });
+        // this.collection = data.store
+        this.setCrossJoin(data.store);
+
 
       return (this.showModal = true);
     },
-    setCrossJoin() {
-      this.collection = [];
+    setCrossJoin(data) {
       for (let i = 0; i < this.styleTags.length; i++) {
         for (let j = 0; j < this.sizeTags.length; j++) {
           for (let z = 0; z < this.colorTags.length; z++) {
-            this.collection.push([
-              this.styleTags[i],
-              this.sizeTags[j],
-              this.colorTags[z]
-            ]);
-          }
-        }
-      }
-    },
-    getTableRow() {
-      let table = document.getElementById("proPriceTable");
-      let tableData = [];
-      let tableDataObj = {
-        sku: "",
-        style: "",
-        size: "",
-        color: "",
-        stock: 0,
-        price: 0,
-        images: '',
-      };
-      this.productDataCollection = [];
-      for (let i = 0; i < table.rows.length; i++) {
-        for (let j = 0; j < table.rows[i].cells.length; j++) {
-          if (j >= 3) {
-            for (let z = 0; z < table.rows[i].cells[j].children.length; z++) {
-              if (table.rows[i].cells[j].children[z].type == "file") {
-                tableData.push([...table.rows[i].cells[j].children[z].files]);
-                break;
-              }
-              tableData.push(table.rows[i].cells[j].children[z].value);
-              break;
+              let crossData = {
+                    tags: [],
+                    data: []
+                };
+                crossData.tags.push(
+                    this.styleTags[i],
+                    this.sizeTags[j],
+                    this.colorTags[z]
+                );
+            if(data){
+                let dataItem = data.find(item => {
+                    if(item.style_id == this.styleTags[i][0] && item.size_id == this.sizeTags[j][0] && item.color_id == this.colorTags[z][0] ){
+                        return item
+                    }
+                })
+                crossData.data = dataItem;
             }
-          } else {
-            tableData.push(table.rows[i].cells[j].children[0].innerHTML);
+            this.collection.push(crossData);
           }
         }
-
-        tableDataObj = {
-          sku: this.sku,
-          style: tableData[0],
-          size: tableData[1],
-          color: tableData[2],
-          stock: tableData[3],
-          price: tableData[4],
-          images: tableData[5],
-        };
-
-        this.productDataCollection.push(tableDataObj);
-        tableData = [];
       }
     },
+    newAttributesAdd(){
+        debugger
+        for (let i = 0; i < this.styleTags.length; i++) {
+        for (let j = 0; j < this.sizeTags.length; j++) {
+          for (let z = 0; z < this.colorTags.length; z++) {
+              let crossData = {
+                    tags: [],
+                    data: []
+                };
+                crossData.tags.push(
+                    this.styleTags[i],
+                    this.sizeTags[j],
+                    this.colorTags[z]
+                );
+            if(this.collection){
+                let dataItem = this.collection.find(item => {
+                    if(item.tags[0][0] == this.styleTags[i][0] && item.tags[1][0] == this.sizeTags[j][0] && item.tags[2][0] == this.colorTags[z][0] ){
+                        return item.data
+                    }
+                })
+                if(!dataItem){
+                    this.collection.push(crossData);
+                }
+            }
+          }
+        }
+      }
+    },
+    // getTableRow() {
+    //   let table = document.getElementById("proPriceTable");
+    //   let tableData = [];
+    //   let tableDataObj = {
+    //     sku: "",
+    //     style: "",
+    //     size: "",
+    //     color: "",
+    //     stock: 0,
+    //     price: 0,
+    //     images: '',
+    //   };
+    //   this.productDataCollection = [];
+    //   for (let i = 0; i < table.rows.length; i++) {
+    //     for (let j = 0; j < table.rows[i].cells.length; j++) {
+    //       if (j >= 3) {
+    //         for (let z = 0; z < table.rows[i].cells[j].children.length; z++) {
+    //           if (table.rows[i].cells[j].children[z].type == "file") {
+    //             tableData.push([...table.rows[i].cells[j].children[z].files]);
+    //             break;
+    //           }
+    //           tableData.push(table.rows[i].cells[j].children[z].value);
+    //           break;
+    //         }
+    //       } else {
+    //         tableData.push(table.rows[i].cells[j].children[0].innerHTML);
+    //       }
+    //     }
+
+    //     tableDataObj = {
+    //       sku: this.sku,
+    //       style: tableData[0],
+    //       size: tableData[1],
+    //       color: tableData[2],
+    //       stock: tableData[3],
+    //       price: tableData[4],
+    //       images: tableData[5],
+    //     };
+
+    //     this.productDataCollection.push(tableDataObj);
+    //     tableData = [];
+    //   }
+    // },
     // setStyleTag(event){
     //     debugger
     //     this.styleTags.push(event.target.value)
@@ -340,11 +388,11 @@ export default {
     //     [[]]
     //   )
     // },
-    getSubCategory(event){
-
+    getSubCategory(id){
+        debugger
         this.axios.get('/api/admin/subcategory/getListById', {
             params:{
-                id: Number(event.target.value)
+                id: Number(id)
             }
             }).then((reselt) => {
             this.subCategories = reselt.data;
@@ -366,53 +414,54 @@ export default {
       this.files[index][0].splice(fileIndex, 1);
     },
 
-    addProduct(){
-        debugger
-        this.styleTags;
-        this.styleOptions;
-        this.getTableRow()
-        const productData = new FormData();
-        productData.append('name', this.name);
-        productData.append('sku', this.sku)
-        productData.append('shortDescription', this.shortDescription)
-        productData.append('description', this.description)
-        for( let i = 0; i < this.productDataCollection.length; i++ ){
-            productData.append('productDetails[' + i + '][sku]', this.productDataCollection[i].sku);
-            productData.append('productDetails[' + i + '][style]', this.productDataCollection[i].style);
-            productData.append('productDetails[' + i + '][size]', this.productDataCollection[i].size);
-            productData.append('productDetails[' + i + '][color]', this.productDataCollection[i].color);
-            productData.append('productDetails[' + i + '][stock]', this.productDataCollection[i].stock);
-            productData.append('productDetails[' + i + '][price]', this.productDataCollection[i].price);
-            for( let j = 0; j < this.productDataCollection[i].images.length; j++ ){
-              productData.append('productDetails[' + i + '][images]['+j+']', this.productDataCollection[i].images[j])
-            }
-        }
+    // addProduct(){
+    //     debugger
+    //     this.styleTags;
+    //     this.styleOptions;
+    //     this.getTableRow()
+    //     const productData = new FormData();
+    //     productData.append('name', this.name);
+    //     productData.append('sku', this.sku)
+    //     productData.append('shortDescription', this.shortDescription)
+    //     productData.append('description', this.description)
+    //     for( let i = 0; i < this.productDataCollection.length; i++ ){
+    //         productData.append('productDetails[' + i + '][sku]', this.productDataCollection[i].sku);
+    //         productData.append('productDetails[' + i + '][style]', this.productDataCollection[i].style);
+    //         productData.append('productDetails[' + i + '][size]', this.productDataCollection[i].size);
+    //         productData.append('productDetails[' + i + '][color]', this.productDataCollection[i].color);
+    //         productData.append('productDetails[' + i + '][stock]', this.productDataCollection[i].stock);
+    //         productData.append('productDetails[' + i + '][price]', this.productDataCollection[i].price);
+    //         for( let j = 0; j < this.productDataCollection[i].images.length; j++ ){
+    //           productData.append('productDetails[' + i + '][images]['+j+']', this.productDataCollection[i].images[j])
+    //         }
+    //     }
 
-        productData.append('category', this.category)
-        productData.append('subCategory', this.subCategory)
+    //     productData.append('category', this.category)
+    //     productData.append('subCategory', this.subCategory)
 
-        this.$Progress.start();
-        this.axios.get('/sanctum/csrf-cookie').then(response => {
-                this.axios.post('/api/admin/product/add', productData, { headers: { "Content-Type": "multipart/form-data" } })
-                    .then(response => {
-                        if (response.data.success) {
-                            this.$Progress.finish();
-                            this.showModal = false
-                            this.$router.push('/admin/product')
-                        } else {
-                            console.log(response)
-                        }
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    });
-            })
-    },
+    //     this.$Progress.start();
+    //     this.axios.get('/sanctum/csrf-cookie').then(response => {
+    //             this.axios.post('/api/admin/product/add', productData, { headers: { "Content-Type": "multipart/form-data" } })
+    //                 .then(response => {
+    //                     if (response.data.success) {
+    //                         this.$Progress.finish();
+    //                         this.showModal = false
+    //                         this.$router.push('/admin/product')
+    //                     } else {
+    //                         console.log(response)
+    //                     }
+    //                 })
+    //                 .catch(function (error) {
+    //                     console.error(error);
+    //                 });
+    //         })
+    // },
   },
     created () {
         this.axios.get('/api/admin/category').then((reselt) => {
             this.categories = reselt.data;
         });
+
         this.axios.get('/api/admin/style').then((reselt) => {
             reselt.data.forEach((item) => {
                 this.styleOptions.push({
