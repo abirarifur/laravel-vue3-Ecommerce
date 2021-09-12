@@ -157,8 +157,8 @@
                                 <input type="file" @change="imagePerview($event, index)" class="form-control " multiple ref="muiltImg" :key="index" accept=".png, .jpg, .jpeg,"/>
                                 <tr>
                                   <td>
-                                      <div class="image-preview" v-if="files[index]" :key="index">
-                                        <div v-for="(file, i) in files[index][0]" :key="i" class="m-1 position-relative">
+                                      <div class="image-preview" v-if="files.newFiles[index]" :key="index">
+                                        <div v-for="(file, i) in files.newFiles[index][0]" :key="i" class="m-1 position-relative">
                                           <i  class="far fa-times-circle position-absolute" @click="removeImg(index, i)"></i>
                                           <img :src="file" alt="" />
                                         </div>
@@ -202,7 +202,9 @@ export default {
     return {
       showModal: false,
       timeForFlash: 3000,
-      files: {},
+      files: {
+          newFiles: {}
+      },
     //   styleTag: "",
       styleTags: [],
     //   sizeTag: "",
@@ -249,6 +251,7 @@ export default {
       }
     },
     getTableRow() {
+        debugger
       let table = document.getElementById("proPriceTable");
       let tableData = [];
       let tableDataObj = {
@@ -266,7 +269,8 @@ export default {
           if (j >= 3) {
             for (let z = 0; z < table.rows[i].cells[j].children.length; z++) {
               if (table.rows[i].cells[j].children[z].type == "file") {
-                tableData.push([...table.rows[i].cells[j].children[z].files]);
+                tableData.push({newFiles: [...table.rows[i].cells[j].children[z].files], oldFiles: []})
+                // tableData.push([...table.rows[i].cells[j].children[z].files]);
                 break;
               }
               tableData.push(table.rows[i].cells[j].children[z].value);
@@ -330,13 +334,13 @@ export default {
 
 
     imagePerview(file, index) {
-
+        debugger
       let inputImageObj = []
     //   let inputImageObj = {index: index,img:[]}
       for (const imgfile of file.target.files) {
         inputImageObj.push(URL.createObjectURL(imgfile));
       }
-      this.files[index] = {...[inputImageObj]};
+      this.files.newFiles[index] = {...[inputImageObj]};
     },
     removeImg(index, fileIndex) {
 
@@ -359,8 +363,9 @@ export default {
             productData.append('productDetails[' + i + '][color]', this.productDataCollection[i].color);
             productData.append('productDetails[' + i + '][stock]', this.productDataCollection[i].stock);
             productData.append('productDetails[' + i + '][price]', this.productDataCollection[i].price);
-            for( let j = 0; j < this.productDataCollection[i].images.length; j++ ){
-              productData.append('productDetails[' + i + '][images]['+j+']', this.productDataCollection[i].images[j])
+            
+            for( let j = 0; j < this.productDataCollection[i].images.newFiles.length; j++ ){
+              productData.append('productDetails[' + i + '][images][newFiles]['+j+']', this.productDataCollection[i].images.newFiles[j])
             }
         }
 
@@ -381,10 +386,12 @@ export default {
         this.axios.get('/sanctum/csrf-cookie').then(response => {
                 this.axios.post('/api/admin/product/add', productData, { headers: { "Content-Type": "multipart/form-data" } })
                     .then(response => {
+                      debugger
                         if (response.data.success) {
                             this.$Progress.finish();
                             this.showModal = false
                             this.$router.push('/admin/product')
+                            this.$emit('loadProductList')
                         } else {
                             console.log(response)
                         }

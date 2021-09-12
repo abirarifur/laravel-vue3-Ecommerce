@@ -20,8 +20,8 @@
 
     </div>
   </div>
-  <product-add-model ref="productAddModel"></product-add-model>
-  <product-edit-model ref="productEditModel"></product-edit-model>
+  <product-add-model ref="productAddModel" @load-product-list="getProductList"></product-add-model>
+  <product-edit-model ref="productEditModel" @load-product-list="getProductList"></product-edit-model>
   <product-details-view ref="productDetailsModel"></product-details-view>
 </template>
 

@@ -27,7 +27,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () 
         Route::get('/product-count-date-wise', [App\Http\Controllers\Admin\ProductController::class, 'productCountDateWise']);
         Route::post('add', [App\Http\Controllers\Admin\ProductController::class, 'store']);
         Route::get('edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit']);
-        Route::post('update/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update']);
+        Route::post('update', [App\Http\Controllers\Admin\ProductController::class, 'update']);
         Route::delete('delete/{id}', [App\Http\Controllers\Admin\ProductController::class, 'destroy']);
         // Route::resource('/', App\Http\Controllers\Admin\ProductController::class);
     });

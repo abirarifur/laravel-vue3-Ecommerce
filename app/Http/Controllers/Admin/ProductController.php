@@ -10,6 +10,7 @@ use App\ImageProcess\ImageProcess;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 class ProductController extends Controller
 {
@@ -116,9 +117,31 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ImageProcess $imageProcess)
     {
-        //
+        $product = Product::findOrFail($request->product_id);
+        $product->name          = $request->name;
+        $product->sku           = $request->sku;
+        $product->description   = $request->description;
+        $product->shortDescription = $request->shortDescription;
+        $product->category_id      = $request->category;
+        $product->subcategory_id   = $request->subCategory;
+        $product->update();
+        $proStoredelete = Store::where('product_sku', $request->sku)->delete();
+        
+        foreach($request->productDetails as $proDetails){
+            $path = $imageProcess->imageSaveAndSend($proDetails['images'], $request->sku);
+            $proStore = new Store;
+            $proStore->product_sku  = $request->sku;
+            $proStore->style_id     = $proDetails['style'];
+            $proStore->size_id      = $proDetails['size'];
+            $proStore->color_id     = $proDetails['color'];
+            $proStore->stock        = $proDetails['stock'];
+            $proStore->price        = $proDetails['price'];
+            $proStore->images       = $path->original;
+            $proStore->save();
+        }
+        return ["success" => true, "message" => "Product Update Successfully"];
     }
 
     /**
